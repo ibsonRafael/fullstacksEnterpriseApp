@@ -1,0 +1,226 @@
+version: '2'
+
+services:
+  ### Beanstalkd Container ####################################
+  # beanstalkd:
+  #   image: jonbaldie/beanstalkd
+  #   container_name: beanstalk.application.dev
+  #   ports:
+  #     - "11300:11300"
+  #   networks:
+  #     - backend
+
+  ### Redis Container #########################################
+  # redis:
+  #   image: redis:alpine
+  #   container_name: redis.application.dev
+  #   volumes:
+  #     - ./containers/redis-data:/data
+  #   networks:
+  #     - backend
+
+
+  ### MySQL Container #########################################
+  mysql:
+    image: mysql:latest
+    container_name: mysql.application.dev
+    volumes:
+      - ./containers/mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_USER: root
+      MYSQL_DATABASE: appdb
+    networks:
+      - frontend
+      - backend
+
+  ### MongoDB Container #######################################
+  # mongo:
+  #   image: mongo:latest
+  #   container_name: mongo.application.dev
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - ./containers/mongo-data:/data/db
+  #   networks:
+  #     - backend
+
+
+  # The Application
+  php_backend:
+    container_name: backend.application.dev
+    build:
+      context: ./dockerfiles/php7
+      dockerfile: Dockerfile
+    ports:
+      - "9090:80"
+    volumes:
+      - ./backend:/var/www/html
+      - ./containers/logs/backend:/var/log/apache2
+    networks:
+      - frontend
+      - backend
+
+  # # The Application
+  # php_command:
+  #   container_name: command.application.dev
+  #   build:
+  #     context: ./dockerfiles/php7
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "81:80"
+  #   volumes:
+  #     - ./backend/command:/var/www/html
+  #     - ./containers/logs/command:/var/log/apache2
+  #   networks:
+  #     - frontend
+  #     - backend
+
+  # php_query:
+  #   container_name: query.application.dev
+  #   build:
+  #     context: ./dockerfiles/php7/Dockerfile
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "82:80"
+  #   volumes:
+  #     - ./backend/query:/var/www/html
+  #     - ./containers/logs/query:/var/log/apache2
+  #   networks:
+  #     - frontend
+  #     - backend
+
+  # php_frontend:
+  #   container_name: app.application.dev
+  #   build:
+  #     context: ./dockerfiles/php7
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "83:80"
+  #   # volumes:
+  #   #   - ./backend:/var/www/html
+  #     # - ./containers/logs/frontend:/var/log/apache2
+  #   networks:
+  #     - frontend
+  #     - backend
+
+  ngnix_frontend:
+    container_name: ngnix.application.dev
+    image: nginx:latest
+    volumes:
+      #- ./nginx.template:/etc/nginx/conf.d/nginx.template
+      - ./frontend/web/:/html/
+    ports:
+       - "8080:80"
+       - "8443:443"
+    environment:
+       - NGINX_HOST=foobar.com
+       - NGINX_PORT=80
+    # command: /bin/sh -c "envsubst < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+    # command: sh -c "envsubst \"`env | awk -F = '{printf \" $$%s\", $$1}'`\" < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+    # command: /bin/sh -c "envsubst '\$VAR1 \$VAR2' < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+    networks:
+      - frontend
+      - backend
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG}
+    container_name: es1.application.dev
+    environment:
+      - cluster.name=application-cluster
+      # - 'http.host=0.0.0.0'
+      # - 'transport.host=127.0.0.1'
+      # - 'ELASTIC_PASSWORD=${ELASTIC_PASSWORD}'
+    ports:
+      - "9200:9200"
+    networks:
+      - frontend
+      - backend
+
+  # elasticsearch2:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:${TAG}
+  #   container_name: es2.application.dev
+  #   environment:
+  #     - cluster.name=docker-cluster
+  #     # - 'http.host=0.0.0.0'
+  #     # - 'transport.host=127.0.0.1'
+  #     # - 'ELASTIC_PASSWORD=${ELASTIC_PASSWORD}'
+  #     - "discovery.zen.ping.unicast.hosts=es1.application.dev"
+  #   ports:
+  #     - "9201:9200"
+  #   networks:
+  #     - frontend
+  #     - backend
+  #   depends_on:
+  #     - 'elasticsearch'
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${TAG}
+    container_name: kibana.application.dev
+    # volumes:
+    #    - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+    environment:
+      SERVER_NAME: kibana.application.dev
+      ELASTICSEARCH_URL: http://es1.application.dev:9200
+      # - ELASTICSEARCH_USERNAME=kibana
+      # - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+
+    ports:
+      - "5601:5601"
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - 'elasticsearch'
+
+  ### RabbitMQ ##################################################
+  rabbitmq:
+    container_name: rabbitmq.application.dev
+    image: rabbitmq:latest
+    volumes:
+      - ./containers/rabbitmq-data:/var/lib/rabbitmq
+    ports:
+      - "4369:4369"
+      - "5671:5671"
+      - "5672:5672"
+      - "5673:5673"
+      - "25672:25672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=pernalonga
+      - RABBITMQ_DEFAULT_PASS=eaivelhinho
+    networks:
+      - frontend
+      - backend
+
+  ### Jenkins ###################################################
+  # jenkins:
+  #   container_name: jenkins.application.dev
+  #   image: jenkins/jenkins:lts
+  #   #build:
+  #   # context: ./containers/build/jenkins
+  #   # dockerfile: Dockerfile
+  #   ports:
+  #     - "58080:8080"
+  #     - "50000:50000"
+  #   privileged: true
+  #   volumes:
+  #     - ./jenkins:/var/jenkins_home
+  #   networks:
+  #     - frontend
+  #     - backend
+
+
+### Networks Setup ############################################
+networks:
+  frontend:
+    driver: "bridge"
+  backend:
+    driver: "bridge"
+
+volumes:
+  redis-data:
+    driver: "local"
+  mysql-data:
+    driver: "local"
+  mongo-data:
+    driver: "local"
