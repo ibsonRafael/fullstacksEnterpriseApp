@@ -61,6 +61,22 @@ services:
       - frontend
       - backend
 
+  # The Application
+  dotnet_backend:
+    container_name: dotnet.application.dev
+    image: microsoft/dotnet:2.1-sdk
+    # build:
+    #   context: ./dockerfiles/php7
+    #   dockerfile: Dockerfile
+    ports:
+      - "9090:80"
+    # volumes:
+    #   - ./backend:/var/www/html
+    #   - ./containers/logs/backend:/var/log/apache2
+    networks:
+      - frontend
+      - backend
+
   # # The Application
   # php_command:
   #   container_name: command.application.dev
