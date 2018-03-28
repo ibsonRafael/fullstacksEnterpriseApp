@@ -187,7 +187,7 @@ services:
       - "25672:25672"
     environment:
       - RABBITMQ_DEFAULT_USER=pernalonga
-      - RABBITMQ_DEFAULT_PASS=eaivelhinho
+      - RABBITMQ_DEFAULT_PASS=eAiVelhinho
     networks:
       - frontend
       - backend
