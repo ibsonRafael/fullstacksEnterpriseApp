@@ -33,6 +33,14 @@ parameters:
     type: string
     format: uuid
 
+  locationUuid:
+    in: path
+    name: locationUuid
+    description: Unique identifier representing a specific loccation that needs to be fetched
+    required: true
+    type: string
+    format: uuid
+
 paths:
   /organization:
     get:
@@ -301,9 +309,282 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
+
+  /location:
+    get:
+      summary: Lists all for the user Location
+      description: |
+        The endpoint returns a list of *Location*.
+      tags:
+        - Location
+      operationId: listLocation
+      produces:
+        - application/json
+      security:
+        - internalApiKey: []
+      responses:
+        200:
+          description: An array of Location
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Location'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Resources Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Saves a new Location
+      description: |
+        The endpoint save a new *Location*.
+      tags:
+        - Location
+      operationId: saveLocation
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Location to be saved
+          required: true
+          schema:
+            $ref: "#/definitions/Location"
+      responses:
+        201:
+          description: Created
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+
+  /location/findByStatus:
+    get:
+      summary: Location
+      description: |
+        The endpoint returns a list of *Location* by its current *Status*.
+      tags:
+        - Location
+      operationId: listLocationByStatus
+      produces:
+        - application/json
+      security:
+        - internalApiKey: []
+      parameters:
+        - in: query
+          name: status
+          description: Status values that need to be considered for filter
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+      responses:
+        200:
+          description: An array of Location
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Location'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Resources Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+  /location/findByTags:
+    get:
+      summary: Location
+      description: |
+        The endpoint returns a list of *Location*.
+      tags:
+        - Location
+      operationId: listLocationByTags
+      produces:
+        - application/json
+      security:
+        - internalApiKey: []
+      parameters:
+        - in: query
+          name: tags
+          description: Tags to filter by
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+      responses:
+        200:
+          description: An array of Location
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Location'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Resources Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+  /location/{locationUuid}:
+    get:
+      summary: Location
+      description: |
+        The endpoint returns one *Location* by your uuid.
+      tags:
+        - Location
+      operationId: getLocationByUuid
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/locationUuid'
+      responses:
+        200:
+          description: An Location
+          schema:
+            $ref: '#/definitions/Location'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Resources Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+    delete:
+      summary: Location
+      description: |
+        The endpoint returns one *Location* by your uuid.
+      tags:
+        - Location
+      operationId: deleteLocationByUuid
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/locationUuid'
+      responses:
+        202:
+          description: Accepted
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Resources Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      summary: Location Types
+      description: |
+        The endpoint returns a list of *Location*.
+      tags:
+        - Location
+      operationId: updateLocation
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/locationUuid'
+        - in: body
+          name: body
+          description: Location to be updated
+          required: true
+          schema:
+            $ref: "#/definitions/Location"
+      responses:
+        202:
+          description: Accepted
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Resources Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        405:
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+
 definitions:
   CodeableConcept:
     type: object
+    required:
+      - uuid
+      - code
+      - name
     properties:
       uuid:
         type: string
@@ -318,6 +599,11 @@ definitions:
 
   Organization:
     type: object
+    required:
+      - uuid
+      - active
+      - type
+      - name
     description: A formally or informally recognized grouping of people or organizations formed for the purpose of achieving some form of collective action.  Includes companies, institutions, corporations, departments, community groups, healthcare practice groups, etc.
     properties:
       uuid:
@@ -388,6 +674,8 @@ definitions:
     required:
       - uuid
       - status
+      - name
+      - identifier
     description: Details and position information for a physical place where services are provided  and resources and participants may be stored, found, contained or accommodated.
     properties:
       uuid:
@@ -401,6 +689,7 @@ definitions:
       status:
         type: string
         description: The status (active | suspended | inactive) property covers the general availability of the resource, not the current value which may be covered by the operationStatus, or by a schedule/slots if they are configured for the location.
+        enum: [active, suspended, inactive]
       operationalStatus:
         type: string
         description: The Operational status of the location (typically only for a bed/room). The Operational status covers operation values most relevant to beds (but can also apply to rooms/units/chair/etc such as an isolation unit/dialisys chair). This typically covers concepts such as contamination, housekeeping and other activities like maintenance.
@@ -418,6 +707,7 @@ definitions:
       mode:
         type: string
         description: Indicates whether (instance | kind) a resource instance represents a specific location or a class of locations.
+        enum: [instance, kind]
       type:
         $ref: '#/definitions/CodeableConcept'
         # description: Indicates the type of function performed at the location.
@@ -451,98 +741,14 @@ definitions:
         type: string
         description: Technical endpoints providing access to services operated for the location. Organizations may have different systems at different locations that provide various services and need to be able to define the technical connection details for how to connect to them, and for what purpose.
 
-  Practitioner:
-    type: object
-    properties:
-      uuid:
-        type: string
-        format: uuid
-        description: Unique identifier representing a specific practitioner.
-      active:
-        type: boolean
-        description: To do
-      name:
-        $ref: '#/definitions/Name'
-      gender:
-        type: string
-      birthDate:
-        type: string
-        format: datetime
-      address:
-        type: array
-        minItems: 1
-        items:
-          $ref: '#/definitions/Address'
-      qualification:
-        type: array
-        minItems: 1
-        items:
-          $ref: '#/definitions/Qualification'
-      telecom:
-        type: array
-        minItems: 1
-        items:
-          $ref: '#/definitions/ContactPoint'
-      photo:
-        type: array
-        minItems: 1
-        items:
-          $ref: '#/definitions/Attachment'
-      creation:
-        type: string
-        format: datetime
-        description: Date practitioner was first created
-      lastUpdated:
-        type: string
-        format: datetime
-        description: Date practitioner was last updated
-
-  Attachment:
-    type: object
-    properties:
-      uuid:
-        type: string
-        format: uuid
-        description: Unique identifier
-      extension:
-        type: string
-        description: Additional Content defined by implementations
-      contentType:
-        type: string
-        description: Mime type of the content, with charset etc.
-      language:
-        type: string
-        description: Human language of the content (BCP-47)
-      data:
-        type: string
-        format: base64Binary
-        description: Data inline, base64ed
-      url:
-        type: string
-        description: Uri where the data can be found
-      size:
-        type: integer
-        format: int32
-        minimum: 0
-        description: Number of bytes of content (if url provided)
-      hash:
-        type: string
-        format: base64Binary
-        description: Hash of the data (sha-1, base64ed)
-      title:
-        type: string
-        description: Label to display in place of the data
-      creation:
-        type: string
-        format: datetime
-        description: Date attachment was first created
-      lastUpdated:
-        type: string
-        format: datetime
-        description: Date attachment was last updated
 
   ContactPoint:
     type: object
+    required:
+      - uuid
+      - system
+      - value
+      - use
     properties:
       uuid:
         type: string
@@ -564,42 +770,12 @@ definitions:
         description: Date telecom was last updated
 
 
-  Name:
-    type: object
-    properties:
-      uuid:
-        type: string
-        format: uuid
-        description: Unique identifier
-      alias:
-        type: string
-      first:
-        type: string
-      family:
-        type: string
-      given:
-        type: array
-        items:
-          type: string
-      prefix:
-        type: array
-        items:
-          type: string
-      suffix:
-        type: array
-        items:
-          type: string
-      creation:
-        type: string
-        format: datetime
-        description: Date name was first created
-      lastUpdated:
-        type: string
-        format: datetime
-        description: Date name was last updated
+
 
   Address:
     type: object
+    required:
+      - uuid
     properties:
       uuid:
         type: string
@@ -628,41 +804,7 @@ definitions:
         format: datetime
         description: Date address was last updated
 
-  Qualification:
-    type: object
-    properties:
-      uuid:
-        type: string
-        format: uuid
-        description: Unique identifier
-      code:
-        type: string
-      text:
-        type: string
-      period:
-        type: object
-        properties:
-          start:
-            type: string
-          end:
-            type: string
-      issuer:
-        type: string
-      creation:
-        type: string
-        format: datetime
-        description: Date qualification was first created
-      lastUpdated:
-        type: string
-        format: datetime
-        description: Date qualification was last updated
-    required:
-      - uuid
-      - code
-    example:
-      uuid: 624b19de-0f4c-4eca-97b7-852daafc1934
-      code: CD
-      text: Descricao textual da Formacao
+
 
   Error:
     type: object
