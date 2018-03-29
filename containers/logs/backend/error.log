@@ -66,3 +66,17 @@ AH00558: apache2: Could not reliably determine the server's fully qualified doma
 AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 172.21.0.3. Set the 'ServerName' directive globally to suppress this message
 [Wed Mar 28 23:49:14.877371 2018] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.25 (Debian) PHP/7.2.3 configured -- resuming normal operations
 [Wed Mar 28 23:49:14.927192 2018] [core:notice] [pid 1] AH00094: Command line: 'apache2 -D FOREGROUND'
+[Wed Mar 28 23:50:59.573426 2018] [core:warn] [pid 1] AH00045: child process 17 still did not exit, sending a SIGTERM
+[Wed Mar 28 23:50:59.582994 2018] [core:warn] [pid 1] AH00045: child process 18 still did not exit, sending a SIGTERM
+[Wed Mar 28 23:51:00.971507 2018] [mpm_prefork:notice] [pid 1] AH00169: caught SIGTERM, shutting down
+AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 172.20.0.5. Set the 'ServerName' directive globally to suppress this message
+[Wed Mar 28 23:51:37.633451 2018] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.25 (Debian) PHP/7.2.3 configured -- resuming normal operations
+[Wed Mar 28 23:51:37.655619 2018] [core:notice] [pid 1] AH00094: Command line: 'apache2 -D FOREGROUND'
+[Wed Mar 28 23:51:56.526567 2018] [mpm_prefork:notice] [pid 1] AH00169: caught SIGTERM, shutting down
+AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 172.20.0.6. Set the 'ServerName' directive globally to suppress this message
+[Wed Mar 28 23:52:32.602584 2018] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.25 (Debian) PHP/7.2.3 configured -- resuming normal operations
+[Wed Mar 28 23:52:32.622161 2018] [core:notice] [pid 1] AH00094: Command line: 'apache2 -D FOREGROUND'
+[Wed Mar 28 23:53:01.469005 2018] [mpm_prefork:notice] [pid 1] AH00169: caught SIGTERM, shutting down
+AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 172.20.0.7. Set the 'ServerName' directive globally to suppress this message
+[Wed Mar 28 23:55:57.225627 2018] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.25 (Debian) PHP/7.2.3 configured -- resuming normal operations
+[Wed Mar 28 23:55:57.255467 2018] [core:notice] [pid 1] AH00094: Command line: 'apache2 -D FOREGROUND'

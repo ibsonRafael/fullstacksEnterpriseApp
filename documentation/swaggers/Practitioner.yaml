@@ -18,6 +18,9 @@ schemes:
 # will be prefixed to all paths
 basePath: /v1
 
+security:
+  - internalApiKey: []
+
 produces:
   - application/json
 
@@ -38,9 +41,11 @@ paths:
         The endpoint returns a list of *Practitioners*.
       tags:
         - Practitioners
-      operationId: getPractitioner
+      operationId: listPractitioner
       produces:
         - application/json
+      security:
+        - internalApiKey: []
       responses:
         200:
           description: An array of Practitioner
@@ -62,10 +67,6 @@ paths:
             $ref: '#/definitions/Error'
         504:
           description: Gateway Timeout
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
     post:
@@ -77,13 +78,16 @@ paths:
       operationId: savePractitioner
       produces:
         - application/json
-      responses:
-        200:
-          description: An array of Practitioner
+      parameters:
+        - in: body
+          name: body
+          description: Practitioner to be saved
+          required: true
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Practitioner'
+            $ref: "#/definitions/Practitioner"
+      responses:
+        201:
+          description: Created
         401:
           description: Unauthorized
           schema:
@@ -92,28 +96,33 @@ paths:
           description: Forbiden
           schema:
             $ref: '#/definitions/Error'
-        404:
-          description: Resources Not Found
-          schema:
-            $ref: '#/definitions/Error'
         504:
           description: Gateway Timeout
           schema:
             $ref: '#/definitions/Error'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
 
-    put:
+
+  /practitioner/findByStatus:
+    get:
       summary: Practitioners Types
       description: |
         The endpoint returns a list of *Practitioners*.
       tags:
         - Practitioners
-      operationId: updatePractitioner
+      operationId: listPractitionerByStatus
       produces:
         - application/json
+      security:
+        - internalApiKey: []
+      parameters:
+        - in: query
+          name: status
+          description: Status values that need to be considered for filter
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
       responses:
         200:
           description: An array of Practitioner
@@ -137,8 +146,94 @@ paths:
           description: Gateway Timeout
           schema:
             $ref: '#/definitions/Error'
-        default:
-          description: Unexpected error
+
+  /practitioner/findByTags:
+    get:
+      summary: Practitioners Types
+      description: |
+        The endpoint returns a list of *Practitioners*.
+      tags:
+        - Practitioners
+      operationId: listPractitionerByTags
+      produces:
+        - application/json
+      security:
+        - internalApiKey: []
+      parameters:
+        - in: query
+          name: tags
+          description: Tags to filter by
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+      responses:
+        200:
+          description: An array of Practitioner
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Practitioner'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Resources Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+  /practitioner/findByTeam:
+    get:
+      summary: Practitioners Types
+      description: |
+        The endpoint returns a list of *Practitioners*.
+      tags:
+        - Practitioners
+      operationId: listPractitionerByTeam
+      produces:
+        - application/json
+      security:
+        - internalApiKey: []
+      parameters:
+        - in: query
+          name: team
+          description: Teams to filter by
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+      responses:
+        200:
+          description: An array of Practitioner
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Practitioner'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Resources Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
           schema:
             $ref: '#/definitions/Error'
 
@@ -173,10 +268,6 @@ paths:
             $ref: '#/definitions/Error'
         504:
           description: Gateway Timeout
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
 
@@ -214,6 +305,46 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+    put:
+      summary: Practitioners Types
+      description: |
+        The endpoint returns a list of *Practitioners*.
+      tags:
+        - Practitioners
+      operationId: updatePractitioner
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/practitionerUuid'
+        - in: body
+          name: body
+          description: Practitioner to be updated
+          required: true
+          schema:
+            $ref: "#/definitions/Practitioner"
+      responses:
+        202:
+          description: Accepted
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Resources Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        405:
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
 
 definitions:
   Practitioner:
@@ -247,7 +378,7 @@ definitions:
         type: array
         minItems: 1
         items:
-          $ref: '#/definitions/Telecom'
+          $ref: '#/definitions/ContactPoint'
       photo:
         type: array
         minItems: 1
@@ -306,7 +437,7 @@ definitions:
         format: datetime
         description: Date attachment was last updated
 
-  Telecom:
+  ContactPoint:
     type: object
     properties:
       uuid:
@@ -421,6 +552,13 @@ definitions:
         type: string
         format: datetime
         description: Date qualification was last updated
+    required:
+      - uuid
+      - code
+    example:
+      uuid: 624b19de-0f4c-4eca-97b7-852daafc1934
+      code: CD
+      text: Descricao textual da Formacao
 
   Error:
     type: object
@@ -432,3 +570,9 @@ definitions:
         type: string
       fields:
         type: string
+
+securityDefinitions:
+  internalApiKey:
+    type: apiKey
+    in: header
+    name: token
