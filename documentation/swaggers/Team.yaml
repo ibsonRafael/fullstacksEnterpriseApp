@@ -1,0 +1,612 @@
+# this is an example of the Uber API
+# as a demonstration of an API spec in YAML
+swagger: '2.0'
+info:
+  title: Allwissend Microservices API
+  description: Allwissend Team API
+  version: "1.0.0"
+
+# the domain of the service
+
+host: backend.application.dev
+
+# array of all schemes that your API supports
+schemes:
+  - http
+  - https
+
+# will be prefixed to all paths
+basePath: /v1
+
+security:
+  - internalApiKey: []
+
+produces:
+  - application/json
+
+parameters:
+  practitionerUuid:
+    in: path
+    name: practitionerUuid
+    description: Unique identifier representing a specific practitioner that needs to be fetched
+    required: true
+    type: string
+    format: uuid
+  teamUuid:
+    in: path
+    name: teamUuid
+    description: Unique identifier representing a specific team that needs to be fetched
+    required: true
+    type: string
+    format: uuid
+
+paths:
+  /team:
+    get:
+      summary: List all teams for current user
+      description: |
+        The endpoint returns a list of *Organization* by its current *Status*.
+      tags:
+        - TeamQuery
+      operationId: listTeam
+      produces:
+        - application/json
+      security:
+        - internalApiKey: []
+      parameters:
+        - in: query
+          name: status
+          description: Status values that need to be considered for filter
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+      responses:
+        200:
+          description: An array of Team
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Team'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Resources Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Saves a new Team
+      description: |
+        The endpoint save a new *Team*.
+      tags:
+        - TeamCommand
+      operationId: saveTeam
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Team to be saved
+          required: true
+          schema:
+            $ref: "#/definitions/Team"
+      responses:
+        201:
+          description: Created
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+  /team/findByStatus:
+    get:
+      summary: List all teams for current user
+      description: |
+        The endpoint returns a list of *Organization* by its current *Status*.
+      tags:
+        - TeamQuery
+      operationId: listTeamByStatus
+      produces:
+        - application/json
+      security:
+        - internalApiKey: []
+      parameters:
+        - in: query
+          name: status
+          description: Status values that need to be considered for filter
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+      responses:
+        200:
+          description: An array of Team
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Team'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Resources Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+  /team/{teamUuid}:
+    get:
+      summary: Get a specific Team
+      description: |
+        The endpoint returns one *Team* by your uuid.
+      tags:
+        - TeamQuery
+      operationId: getTeamByUuid
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/teamUuid'
+      responses:
+        200:
+          description: An Organization
+          schema:
+            $ref: '#/definitions/Team'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Resources Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      summary: Updates a Team type
+      description: |
+        The endpoint returns a list of *Organization*.
+      tags:
+        - TeamCommand
+      operationId: updateTeam
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/teamUuid'
+        - in: body
+          name: body
+          description: Organization to be updated
+          required: true
+          schema:
+            $ref: "#/definitions/Team"
+      responses:
+        202:
+          description: Accepted
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Resources Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        405:
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      summary: Delte a Team type using its uuid
+      description: |
+        The endpoint returns one *Team* by your uuid.
+      tags:
+        - TeamCommand
+      operationId: deleteTeamByUuid
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/teamUuid'
+      responses:
+        202:
+          description: Accepted
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Resources Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /team/{teamUuid}/member:
+    post:
+      summary: Add a new Member to a Team
+      description: |
+        The endpoint save a new *Team*.
+      tags:
+        - PractitionerCommand
+      operationId: addTeamMember
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/teamUuid'
+        - in: body
+          name: body
+          description: Team to be saved
+          required: true
+          schema:
+            $ref: "#/definitions/Member"
+      responses:
+        201:
+          description: Created
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+  /team/{teamUuid}/member/{practitionerUuid}:
+    delete:
+      summary: Delete a Member from a Team type
+      description: |
+        The endpoint returns a list of *Organization*.
+      tags:
+        - PractitionerCommand
+      operationId: deleteTeamMember
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/teamUuid'
+        - $ref: '#/parameters/practitionerUuid'
+      responses:
+        202:
+          description: Accepted
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Resources Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      summary: Updates a Member in a Team type
+      description: |
+        The endpoint returns a list of *Organization*.
+      tags:
+        - PractitionerCommand
+      operationId: updateTeamMember
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/teamUuid'
+        - $ref: '#/parameters/practitionerUuid'
+        - in: body
+          name: body
+          description: Team to be saved
+          required: true
+          schema:
+            $ref: "#/definitions/Member"
+      responses:
+        202:
+          description: Accepted
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbiden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Resources Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        405:
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+definitions:
+  Team:
+    type: object
+    description: Team?!
+    properties:
+      uuid:
+        type: string
+        format: uuid
+        description: Unique identifier representing a specific Team in a Organization
+      code:
+        type: string
+        description: Code thats identifier the Team in human friendly format
+      status:
+        type: string
+        description: Status...
+        enum: ["working", "stopped", "loss"]
+      name:
+        type: string
+        description: Team name.
+      defaultLocation:
+        $ref: '#/definitions/Location'
+      currentLocation:
+        $ref: '#/definitions/Location'
+      members:
+        type: array
+        minItems: 1
+        items:
+          $ref: '#/definitions/Member'
+  Member:
+    type: object
+    description: Member?!
+    properties:
+      uuid:
+        type: string
+        format: uuid
+        description: Unique identifier representing a specific member
+      period:
+        $ref: '#/definitions/Period'
+      practitioner:
+        $ref: '#/definitions/Practitioner'
+      type:
+        type: string
+        description: type....
+        enum: ["permanent", "temporary", "loaned", "outsourced", "rented"]
+      status:
+        type: string
+        description: Status...
+        enum: ["evaluation", "not_started", "in_hiring", "in_training", "absent", "lunch", "present", "loaned", "working", "stopped", "loss", "injured", "away"]
+
+  Practitioner:
+    type: object
+    properties:
+      uuid:
+        type: string
+        format: uuid
+        description: Unique identifier representing a specific practitioner.
+      active:
+        type: boolean
+        description: To do
+      name:
+        $ref: '#/definitions/Name'
+      photo:
+        type: array
+        minItems: 1
+        items:
+          $ref: '#/definitions/Attachment'
+
+
+  Attachment:
+    type: object
+    properties:
+      uuid:
+        type: string
+        format: uuid
+        description: Unique identifier
+      extension:
+        type: string
+        description: Additional Content defined by implementations
+      contentType:
+        type: string
+        description: Mime type of the content, with charset etc.
+      language:
+        type: string
+        description: Human language of the content (BCP-47)
+      data:
+        type: string
+        format: base64Binary
+        description: Data inline, base64ed
+      url:
+        type: string
+        description: Uri where the data can be found
+      size:
+        type: integer
+        format: int32
+        minimum: 0
+        description: Number of bytes of content (if url provided)
+      hash:
+        type: string
+        format: base64Binary
+        description: Hash of the data (sha-1, base64ed)
+      title:
+        type: string
+        description: Label to display in place of the data
+      creation:
+        type: string
+        format: datetime
+        description: Date attachment was first created
+      lastUpdated:
+        type: string
+        format: datetime
+        description: Date attachment was last updated
+
+  Name:
+    type: object
+    properties:
+      uuid:
+        type: string
+        format: uuid
+        description: Unique identifier
+      alias:
+        type: string
+      first:
+        type: string
+      family:
+        type: string
+      given:
+        type: array
+        items:
+          type: string
+      prefix:
+        type: array
+        items:
+          type: string
+      suffix:
+        type: array
+        items:
+          type: string
+      creation:
+        type: string
+        format: datetime
+        description: Date name was first created
+      lastUpdated:
+        type: string
+        format: datetime
+        description: Date name was last updated
+
+  CodeableConcept:
+    type: object
+    required:
+      - uuid
+      - code
+      - name
+    properties:
+      uuid:
+        type: string
+        format: uuid
+        description: Unique identifier representing a specific codeable concept.
+      code:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+
+  Period:
+    type: object
+    description: Time period when contact was/is in use. Allows contact to be placed in historical context.
+    properties:
+      start:
+        type: string
+        format: datetime
+      end:
+        type: string
+        format: datetime
+
+  Location:
+    type: object
+    required:
+      - uuid
+      - status
+      - name
+      - identifier
+    description: Details and position information for a physical place where services are provided  and resources and participants may be stored, found, contained or accommodated.
+    properties:
+      uuid:
+        type: string
+        format: uuid
+        description: Unique identifier representing a specific location.
+      identifier:
+        type: string
+        #$ref: '#/definitions/Identifier'
+        description: Unique code or number identifying the location to its users
+      status:
+        type: string
+        description: The status (active | suspended | inactive) property covers the general availability of the resource, not the current value which may be covered by the operationStatus, or by a schedule/slots if they are configured for the location.
+        enum: ["active", "suspended", "inactive"]
+      operationalStatus:
+        type: string
+        description: The Operational status of the location (typically only for a bed/room). The Operational status covers operation values most relevant to beds (but can also apply to rooms/units/chair/etc such as an isolation unit/dialisys chair). This typically covers concepts such as contamination, housekeeping and other activities like maintenance.
+      name:
+        type: string
+        description: Name of the location as used by humans
+      alias:
+        type: array
+        description: A list of alternate names that the location is known as, or was known as in the past
+        items:
+          type: string
+      type:
+        $ref: '#/definitions/CodeableConcept'
+        # description: Indicates the type of function performed at the location.
+
+
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
+
+securityDefinitions:
+  internalApiKey:
+    type: apiKey
+    in: header
+    name: token

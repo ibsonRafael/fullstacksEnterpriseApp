@@ -3,7 +3,7 @@
 swagger: '2.0'
 info:
   title: Allwissend Microservices API
-  description: Move your app forward with the Uber API
+  description: Allwissend Practitioner API
   version: "1.0.0"
 
 # the domain of the service
@@ -384,6 +384,11 @@ definitions:
         minItems: 1
         items:
           $ref: '#/definitions/Attachment'
+      cost:
+        type: array
+        minItems: 1
+        items:
+          $ref: '#/definitions/Cost'
       creation:
         type: string
         format: datetime
@@ -446,10 +451,30 @@ definitions:
         description: Unique identifier
       system:
         type: string
+        description: Telecommunications form for contact point - what communications system is required to make use of the contact.
+        enum: [phone, fax, email, pager, url, sms, other]
       value:
         type: string
+        description: The actual contact point details, in a form that is meaningful to the designated communication system (i.e. phone number or email address).
       use:
         type: string
+        description: Identifies the purpose for the contact point. This is labeled as *Is Modifier* because applications should not mistake a temporary or old contact etc. for a current/permanent one. Applications can assume that a contact is current unless it explicitly says that it is temporary or old.
+        enum: [home, work, temp, old, mobile]
+      rank:
+        type: integer
+        format: int32
+        description: Specify preferred order of use (1 = highest). Contacts are ranked with lower values coming before higher values.
+        minimum: 1
+      period:
+        type: object
+        description: Time period when contact was/is in use. Allows contact to be placed in historical context.
+        properties:
+          start:
+            type: string
+            format: datetime
+          end:
+            type: string
+            format: datetime
       creation:
         type: string
         format: datetime
@@ -459,6 +484,49 @@ definitions:
         format: datetime
         description: Date telecom was last updated
 
+
+  Cost:
+    type: object
+    properties:
+      uuid:
+        type: string
+        format: uuid
+        description: Unique identifier
+      status:
+        type: string
+        description: The status (active | suspended | inactive) property covers the general availability of the resource, not the current value which may be covered by the operationStatus, or by a schedule/slots if they are configured for the location.
+        enum: [active, suspended, inactive]
+      hourPrice:
+        type: number
+        format: double
+        minimum: 0
+        description: Valued Item fee, charge, or cost
+      usePrice:
+        type: number
+        format: double
+        minimum: 0
+        description: Valued Item fee, charge, or cost
+      unit:
+        type: string
+        description: USD, BRL, BTC, ETH
+      period:
+        type: object
+        description: Time period when cost was/is in use. Allows cost to be placed in historical context.
+        properties:
+          start:
+            type: string
+            format: datetime
+          end:
+            type: string
+            format: datetime
+      creation:
+        type: string
+        format: datetime
+        description: Date address was first created
+      lastUpdated:
+        type: string
+        format: datetime
+        description: Date address was last updated
 
   Name:
     type: object
@@ -496,6 +564,7 @@ definitions:
 
   Address:
     type: object
+    description: Base Structure Definition for Address Type. Allows to be record postal addresses, along with notes about their use. An address expressed using postal conventions (as opposed to GPS or other location definition formats).  This data type may be used to convey addresses for use in delivering mail as well as for visiting locations which might not be valid for mail delivery.  There are a variety of postal address formats defined around the world.
     properties:
       uuid:
         type: string
@@ -503,18 +572,42 @@ definitions:
         description: Unique identifier
       use:
         type: string
+        description: The purpose (home | work | temp | old) of this address. This is labeled as *Is Modifier* because applications should not mistake a temporary or old address etc.for a current/permanent one. Applications can assume that an address is current unless it explicitly says that it is temporary or old.
+        enum: [home, work, temp, old]
+      type:
+        type: string
+        description: Distinguishes between physical addresses (those you can visit) and mailing addresses (e.g. PO Boxes and care-of addresses). Most addresses are both.
+        enum: [postal, physical, both]
       line:
         type: array
+        description: This component contains the house number, apartment number, street name, street direction,  P.O. Box number, delivery hints, and similar address information.
         items:
           type: string
       city:
         type: string
+        description: The name of the city, town, village or other community or delivery center.
+      district:
+        type: string
+        description: District is sometimes known as county, but in some regions 'county' is used in place of city (municipality), so county name should be conveyed in city instead.
       state:
         type: string
+        description: Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (i.e. US 2 letter state codes).
       country:
         type: string
+        description: Country - a nation as commonly understood or generally accepted.
       postalCode:
         type: string
+        description: A postal code designating a region defined by the postal service.
+      period:
+        type: object
+        description: Time period when address was/is in use. Allows addresses to be placed in historical context.
+        properties:
+          start:
+            type: string
+            format: datetime
+          end:
+            type: string
+            format: datetime
       creation:
         type: string
         format: datetime

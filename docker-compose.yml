@@ -190,6 +190,10 @@ services:
       - 'elasticsearch'
 
   ### RabbitMQ ##################################################
+  # https://www.rabbitmq.com/tutorials/tutorial-two-dotnet.html
+  # https://www.rabbitmq.com/tutorials/tutorial-five-php.html
+  # https://www.rabbitmq.com/tutorials/tutorial-one-javascript.html
+  # 
   rabbitmq:
     container_name: rabbitmq.application.dev
     image: rabbitmq:latest
