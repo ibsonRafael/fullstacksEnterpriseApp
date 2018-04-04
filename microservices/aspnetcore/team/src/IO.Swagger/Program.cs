@@ -44,13 +44,12 @@ namespace IO.Swagger
                 channel.BasicConsume(queue: "team",
                                      autoAck: true,
                                      consumer: consumer);
-
                  // Console.WriteLine(" [!] Waiting for Events...");
                  // Console.WriteLine(" Press [enter] to exit.");
                  // Console.ReadLine();
                  BuildWebHost(args).Run();
             }
-
+            // Posicao original no Run()
             //BuildWebHost(args).Run();
         }
 
