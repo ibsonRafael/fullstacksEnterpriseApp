@@ -1,0 +1,1091 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Allwissend Practitioner API",
+    "version" : "1.0.0",
+    "title" : "Allwissend Microservices API"
+  },
+  "host" : "backend.application.dev",
+  "basePath" : "/v1",
+  "schemes" : [ "http", "https" ],
+  "produces" : [ "application/json" ],
+  "security" : [ {
+    "internalApiKey" : [ ]
+  } ],
+  "paths" : {
+    "/practitioner" : {
+      "get" : {
+        "tags" : [ "Practitioners" ],
+        "summary" : "Practitioners Types",
+        "description" : "The endpoint returns a list of *Practitioners*.\n",
+        "operationId" : "listPractitioner",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "An array of Practitioner",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Practitioner"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "403" : {
+            "description" : "Forbiden",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "Resources Not Found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "504" : {
+            "description" : "Gateway Timeout",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "internalApiKey" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "Practitioners" ],
+        "summary" : "Practitioners Types",
+        "description" : "The endpoint returns a list of *Practitioners*.\n",
+        "operationId" : "savePractitioner",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Practitioner to be saved",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Practitioner"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "403" : {
+            "description" : "Forbiden",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "504" : {
+            "description" : "Gateway Timeout",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/practitioner/findByStatus" : {
+      "get" : {
+        "tags" : [ "Practitioners" ],
+        "summary" : "Practitioners Types",
+        "description" : "The endpoint returns a list of *Practitioners*.\n",
+        "operationId" : "listPractitionerByStatus",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Status values that need to be considered for filter",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "An array of Practitioner",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Practitioner"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "403" : {
+            "description" : "Forbiden",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "Resources Not Found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "504" : {
+            "description" : "Gateway Timeout",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "internalApiKey" : [ ]
+        } ]
+      }
+    },
+    "/practitioner/findByTags" : {
+      "get" : {
+        "tags" : [ "Practitioners" ],
+        "summary" : "Practitioners Types",
+        "description" : "The endpoint returns a list of *Practitioners*.\n",
+        "operationId" : "listPractitionerByTags",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "tags",
+          "in" : "query",
+          "description" : "Tags to filter by",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "An array of Practitioner",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Practitioner"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "403" : {
+            "description" : "Forbiden",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "Resources Not Found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "504" : {
+            "description" : "Gateway Timeout",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "internalApiKey" : [ ]
+        } ]
+      }
+    },
+    "/practitioner/findByTeam" : {
+      "get" : {
+        "tags" : [ "Practitioners" ],
+        "summary" : "Practitioners Types",
+        "description" : "The endpoint returns a list of *Practitioners*.\n",
+        "operationId" : "listPractitionerByTeam",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "team",
+          "in" : "query",
+          "description" : "Teams to filter by",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "An array of Practitioner",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Practitioner"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "403" : {
+            "description" : "Forbiden",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "Resources Not Found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "504" : {
+            "description" : "Gateway Timeout",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "internalApiKey" : [ ]
+        } ]
+      }
+    },
+    "/practitioner/{practitionerUuid}" : {
+      "get" : {
+        "tags" : [ "Practitioners" ],
+        "summary" : "Practitioner Type",
+        "description" : "The endpoint returns one *Practitioner* by your uuid.\n",
+        "operationId" : "getPractitionerByUuid",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "practitionerUuid",
+          "in" : "path",
+          "description" : "Unique identifier representing a specific practitioner that needs to be fetched",
+          "required" : true,
+          "type" : "string",
+          "format" : "uuid"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "An Practitioner",
+            "schema" : {
+              "$ref" : "#/definitions/Practitioner"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "403" : {
+            "description" : "Forbiden",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "Resources Not Found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "504" : {
+            "description" : "Gateway Timeout",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Practitioners" ],
+        "summary" : "Practitioners Types",
+        "description" : "The endpoint returns a list of *Practitioners*.\n",
+        "operationId" : "updatePractitioner",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "practitionerUuid",
+          "in" : "path",
+          "description" : "Unique identifier representing a specific practitioner that needs to be fetched",
+          "required" : true,
+          "type" : "string",
+          "format" : "uuid"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Practitioner to be updated",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Practitioner"
+          }
+        } ],
+        "responses" : {
+          "202" : {
+            "description" : "Accepted"
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "403" : {
+            "description" : "Forbiden",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "Resources Not Found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "405" : {
+            "description" : "Invalid input",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "504" : {
+            "description" : "Gateway Timeout",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Practitioners" ],
+        "summary" : "Practitioner Type",
+        "description" : "The endpoint returns one *Practitioner* by your uuid.\n",
+        "operationId" : "deletePractitionerByUuid",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "practitionerUuid",
+          "in" : "path",
+          "description" : "Unique identifier representing a specific practitioner that needs to be fetched",
+          "required" : true,
+          "type" : "string",
+          "format" : "uuid"
+        } ],
+        "responses" : {
+          "202" : {
+            "description" : "Accepted"
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "403" : {
+            "description" : "Forbiden",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "Resources Not Found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "504" : {
+            "description" : "Gateway Timeout",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "internalApiKey" : {
+      "type" : "apiKey",
+      "name" : "token",
+      "in" : "header"
+    }
+  },
+  "definitions" : {
+    "Practitioner" : {
+      "type" : "object",
+      "properties" : {
+        "uuid" : {
+          "type" : "string",
+          "format" : "uuid",
+          "description" : "Unique identifier representing a specific practitioner."
+        },
+        "active" : {
+          "type" : "boolean",
+          "description" : "To do"
+        },
+        "name" : {
+          "$ref" : "#/definitions/Name"
+        },
+        "gender" : {
+          "type" : "string"
+        },
+        "birthDate" : {
+          "type" : "string",
+          "format" : "datetime"
+        },
+        "address" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Address"
+          },
+          "minItems" : 1
+        },
+        "qualification" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Qualification"
+          },
+          "minItems" : 1
+        },
+        "telecom" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ContactPoint"
+          },
+          "minItems" : 1
+        },
+        "photo" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Attachment"
+          },
+          "minItems" : 1
+        },
+        "cost" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Cost"
+          },
+          "minItems" : 1
+        },
+        "creation" : {
+          "type" : "string",
+          "format" : "datetime",
+          "description" : "Date practitioner was first created"
+        },
+        "lastUpdated" : {
+          "type" : "string",
+          "format" : "datetime",
+          "description" : "Date practitioner was last updated"
+        }
+      },
+      "example" : {
+        "qualification" : [ {
+          "uuid" : "624b19de-0f4c-4eca-97b7-852daafc1934",
+          "code" : "CD",
+          "text" : "Descricao textual da Formacao"
+        }, {
+          "uuid" : "624b19de-0f4c-4eca-97b7-852daafc1934",
+          "code" : "CD",
+          "text" : "Descricao textual da Formacao"
+        } ],
+        "lastUpdated" : "lastUpdated",
+        "address" : [ {
+          "country" : "country",
+          "lastUpdated" : "lastUpdated",
+          "period" : {
+            "start" : "start",
+            "end" : "end"
+          },
+          "city" : "city",
+          "use" : "home",
+          "line" : [ "line", "line" ],
+          "district" : "district",
+          "postalCode" : "postalCode",
+          "state" : "state",
+          "type" : "postal",
+          "uuid" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+          "creation" : "creation"
+        }, {
+          "country" : "country",
+          "lastUpdated" : "lastUpdated",
+          "period" : {
+            "start" : "start",
+            "end" : "end"
+          },
+          "city" : "city",
+          "use" : "home",
+          "line" : [ "line", "line" ],
+          "district" : "district",
+          "postalCode" : "postalCode",
+          "state" : "state",
+          "type" : "postal",
+          "uuid" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+          "creation" : "creation"
+        } ],
+        "cost" : [ {
+          "lastUpdated" : "lastUpdated",
+          "unit" : "unit",
+          "period" : {
+            "start" : "start",
+            "end" : "end"
+          },
+          "hourPrice" : 0.14658129805029452,
+          "uuid" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+          "usePrice" : 0.5962133916683182,
+          "creation" : "creation",
+          "status" : "active"
+        }, {
+          "lastUpdated" : "lastUpdated",
+          "unit" : "unit",
+          "period" : {
+            "start" : "start",
+            "end" : "end"
+          },
+          "hourPrice" : 0.14658129805029452,
+          "uuid" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+          "usePrice" : 0.5962133916683182,
+          "creation" : "creation",
+          "status" : "active"
+        } ],
+        "gender" : "gender",
+        "name" : {
+          "given" : [ "given", "given" ],
+          "lastUpdated" : "lastUpdated",
+          "prefix" : [ "prefix", "prefix" ],
+          "alias" : "alias",
+          "family" : "family",
+          "suffix" : [ "suffix", "suffix" ],
+          "uuid" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+          "first" : "first",
+          "creation" : "creation"
+        },
+        "active" : true,
+        "photo" : [ {
+          "lastUpdated" : "lastUpdated",
+          "extension" : "extension",
+          "data" : "data",
+          "size" : 0,
+          "language" : "language",
+          "title" : "title",
+          "uuid" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+          "contentType" : "contentType",
+          "url" : "url",
+          "hash" : "hash",
+          "creation" : "creation"
+        }, {
+          "lastUpdated" : "lastUpdated",
+          "extension" : "extension",
+          "data" : "data",
+          "size" : 0,
+          "language" : "language",
+          "title" : "title",
+          "uuid" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+          "contentType" : "contentType",
+          "url" : "url",
+          "hash" : "hash",
+          "creation" : "creation"
+        } ],
+        "telecom" : [ {
+          "lastUpdated" : "lastUpdated",
+          "period" : {
+            "start" : "start",
+            "end" : "end"
+          },
+          "system" : "phone",
+          "use" : "home",
+          "rank" : 1,
+          "uuid" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+          "value" : "value",
+          "creation" : "creation"
+        }, {
+          "lastUpdated" : "lastUpdated",
+          "period" : {
+            "start" : "start",
+            "end" : "end"
+          },
+          "system" : "phone",
+          "use" : "home",
+          "rank" : 1,
+          "uuid" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+          "value" : "value",
+          "creation" : "creation"
+        } ],
+        "uuid" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+        "birthDate" : "birthDate",
+        "creation" : "creation"
+      }
+    },
+    "Attachment" : {
+      "type" : "object",
+      "properties" : {
+        "uuid" : {
+          "type" : "string",
+          "format" : "uuid",
+          "description" : "Unique identifier"
+        },
+        "extension" : {
+          "type" : "string",
+          "description" : "Additional Content defined by implementations"
+        },
+        "contentType" : {
+          "type" : "string",
+          "description" : "Mime type of the content, with charset etc."
+        },
+        "language" : {
+          "type" : "string",
+          "description" : "Human language of the content (BCP-47)"
+        },
+        "data" : {
+          "type" : "string",
+          "format" : "base64Binary",
+          "description" : "Data inline, base64ed"
+        },
+        "url" : {
+          "type" : "string",
+          "description" : "Uri where the data can be found"
+        },
+        "size" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of bytes of content (if url provided)",
+          "minimum" : 0
+        },
+        "hash" : {
+          "type" : "string",
+          "format" : "base64Binary",
+          "description" : "Hash of the data (sha-1, base64ed)"
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "Label to display in place of the data"
+        },
+        "creation" : {
+          "type" : "string",
+          "format" : "datetime",
+          "description" : "Date attachment was first created"
+        },
+        "lastUpdated" : {
+          "type" : "string",
+          "format" : "datetime",
+          "description" : "Date attachment was last updated"
+        }
+      },
+      "example" : {
+        "lastUpdated" : "lastUpdated",
+        "extension" : "extension",
+        "data" : "data",
+        "size" : 0,
+        "language" : "language",
+        "title" : "title",
+        "uuid" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+        "contentType" : "contentType",
+        "url" : "url",
+        "hash" : "hash",
+        "creation" : "creation"
+      }
+    },
+    "ContactPoint" : {
+      "type" : "object",
+      "properties" : {
+        "uuid" : {
+          "type" : "string",
+          "format" : "uuid",
+          "description" : "Unique identifier"
+        },
+        "system" : {
+          "type" : "string",
+          "description" : "Telecommunications form for contact point - what communications system is required to make use of the contact.",
+          "enum" : [ "phone", "fax", "email", "pager", "url", "sms", "other" ]
+        },
+        "value" : {
+          "type" : "string",
+          "description" : "The actual contact point details, in a form that is meaningful to the designated communication system (i.e. phone number or email address)."
+        },
+        "use" : {
+          "type" : "string",
+          "description" : "Identifies the purpose for the contact point. This is labeled as *Is Modifier* because applications should not mistake a temporary or old contact etc. for a current/permanent one. Applications can assume that a contact is current unless it explicitly says that it is temporary or old.",
+          "enum" : [ "home", "work", "temp", "old", "mobile" ]
+        },
+        "rank" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Specify preferred order of use (1 = highest). Contacts are ranked with lower values coming before higher values.",
+          "minimum" : 1
+        },
+        "period" : {
+          "$ref" : "#/definitions/ContactPoint_period"
+        },
+        "creation" : {
+          "type" : "string",
+          "format" : "datetime",
+          "description" : "Date telecom was first created"
+        },
+        "lastUpdated" : {
+          "type" : "string",
+          "format" : "datetime",
+          "description" : "Date telecom was last updated"
+        }
+      },
+      "example" : {
+        "lastUpdated" : "lastUpdated",
+        "period" : {
+          "start" : "start",
+          "end" : "end"
+        },
+        "system" : "phone",
+        "use" : "home",
+        "rank" : 1,
+        "uuid" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+        "value" : "value",
+        "creation" : "creation"
+      }
+    },
+    "Cost" : {
+      "type" : "object",
+      "properties" : {
+        "uuid" : {
+          "type" : "string",
+          "format" : "uuid",
+          "description" : "Unique identifier"
+        },
+        "status" : {
+          "type" : "string",
+          "description" : "The status (active | suspended | inactive) property covers the general availability of the resource, not the current value which may be covered by the operationStatus, or by a schedule/slots if they are configured for the location.",
+          "enum" : [ "active", "suspended", "inactive" ]
+        },
+        "hourPrice" : {
+          "type" : "number",
+          "format" : "double",
+          "description" : "Valued Item fee, charge, or cost",
+          "minimum" : 0
+        },
+        "usePrice" : {
+          "type" : "number",
+          "format" : "double",
+          "description" : "Valued Item fee, charge, or cost",
+          "minimum" : 0
+        },
+        "unit" : {
+          "type" : "string",
+          "description" : "USD, BRL, BTC, ETH"
+        },
+        "period" : {
+          "$ref" : "#/definitions/Cost_period"
+        },
+        "creation" : {
+          "type" : "string",
+          "format" : "datetime",
+          "description" : "Date address was first created"
+        },
+        "lastUpdated" : {
+          "type" : "string",
+          "format" : "datetime",
+          "description" : "Date address was last updated"
+        }
+      },
+      "example" : {
+        "lastUpdated" : "lastUpdated",
+        "unit" : "unit",
+        "period" : {
+          "start" : "start",
+          "end" : "end"
+        },
+        "hourPrice" : 0.14658129805029452,
+        "uuid" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+        "usePrice" : 0.5962133916683182,
+        "creation" : "creation",
+        "status" : "active"
+      }
+    },
+    "Name" : {
+      "type" : "object",
+      "properties" : {
+        "uuid" : {
+          "type" : "string",
+          "format" : "uuid",
+          "description" : "Unique identifier"
+        },
+        "alias" : {
+          "type" : "string"
+        },
+        "first" : {
+          "type" : "string"
+        },
+        "family" : {
+          "type" : "string"
+        },
+        "given" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "prefix" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "suffix" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "creation" : {
+          "type" : "string",
+          "format" : "datetime",
+          "description" : "Date name was first created"
+        },
+        "lastUpdated" : {
+          "type" : "string",
+          "format" : "datetime",
+          "description" : "Date name was last updated"
+        }
+      },
+      "example" : {
+        "given" : [ "given", "given" ],
+        "lastUpdated" : "lastUpdated",
+        "prefix" : [ "prefix", "prefix" ],
+        "alias" : "alias",
+        "family" : "family",
+        "suffix" : [ "suffix", "suffix" ],
+        "uuid" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+        "first" : "first",
+        "creation" : "creation"
+      }
+    },
+    "Address" : {
+      "type" : "object",
+      "properties" : {
+        "uuid" : {
+          "type" : "string",
+          "format" : "uuid",
+          "description" : "Unique identifier"
+        },
+        "use" : {
+          "type" : "string",
+          "description" : "The purpose (home | work | temp | old) of this address. This is labeled as *Is Modifier* because applications should not mistake a temporary or old address etc.for a current/permanent one. Applications can assume that an address is current unless it explicitly says that it is temporary or old.",
+          "enum" : [ "home", "work", "temp", "old" ]
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "Distinguishes between physical addresses (those you can visit) and mailing addresses (e.g. PO Boxes and care-of addresses). Most addresses are both.",
+          "enum" : [ "postal", "physical", "both" ]
+        },
+        "line" : {
+          "type" : "array",
+          "description" : "This component contains the house number, apartment number, street name, street direction,  P.O. Box number, delivery hints, and similar address information.",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "city" : {
+          "type" : "string",
+          "description" : "The name of the city, town, village or other community or delivery center."
+        },
+        "district" : {
+          "type" : "string",
+          "description" : "District is sometimes known as county, but in some regions 'county' is used in place of city (municipality), so county name should be conveyed in city instead."
+        },
+        "state" : {
+          "type" : "string",
+          "description" : "Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (i.e. US 2 letter state codes)."
+        },
+        "country" : {
+          "type" : "string",
+          "description" : "Country - a nation as commonly understood or generally accepted."
+        },
+        "postalCode" : {
+          "type" : "string",
+          "description" : "A postal code designating a region defined by the postal service."
+        },
+        "period" : {
+          "$ref" : "#/definitions/Address_period"
+        },
+        "creation" : {
+          "type" : "string",
+          "format" : "datetime",
+          "description" : "Date address was first created"
+        },
+        "lastUpdated" : {
+          "type" : "string",
+          "format" : "datetime",
+          "description" : "Date address was last updated"
+        }
+      },
+      "description" : "Base Structure Definition for Address Type. Allows to be record postal addresses, along with notes about their use. An address expressed using postal conventions (as opposed to GPS or other location definition formats).  This data type may be used to convey addresses for use in delivering mail as well as for visiting locations which might not be valid for mail delivery.  There are a variety of postal address formats defined around the world.",
+      "example" : {
+        "country" : "country",
+        "lastUpdated" : "lastUpdated",
+        "period" : {
+          "start" : "start",
+          "end" : "end"
+        },
+        "city" : "city",
+        "use" : "home",
+        "line" : [ "line", "line" ],
+        "district" : "district",
+        "postalCode" : "postalCode",
+        "state" : "state",
+        "type" : "postal",
+        "uuid" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+        "creation" : "creation"
+      }
+    },
+    "Qualification" : {
+      "type" : "object",
+      "required" : [ "code", "uuid" ],
+      "properties" : {
+        "uuid" : {
+          "type" : "string",
+          "format" : "uuid",
+          "description" : "Unique identifier"
+        },
+        "code" : {
+          "type" : "string"
+        },
+        "text" : {
+          "type" : "string"
+        },
+        "period" : {
+          "$ref" : "#/definitions/Qualification_period"
+        },
+        "issuer" : {
+          "type" : "string"
+        },
+        "creation" : {
+          "type" : "string",
+          "format" : "datetime",
+          "description" : "Date qualification was first created"
+        },
+        "lastUpdated" : {
+          "type" : "string",
+          "format" : "datetime",
+          "description" : "Date qualification was last updated"
+        }
+      },
+      "example" : {
+        "uuid" : "624b19de-0f4c-4eca-97b7-852daafc1934",
+        "code" : "CD",
+        "text" : "Descricao textual da Formacao"
+      }
+    },
+    "Error" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "message" : {
+          "type" : "string"
+        },
+        "fields" : {
+          "type" : "string"
+        }
+      }
+    },
+    "ContactPoint_period" : {
+      "properties" : {
+        "start" : {
+          "type" : "string",
+          "format" : "datetime"
+        },
+        "end" : {
+          "type" : "string",
+          "format" : "datetime"
+        }
+      },
+      "description" : "Time period when contact was/is in use. Allows contact to be placed in historical context.",
+      "example" : {
+        "start" : "start",
+        "end" : "end"
+      }
+    },
+    "Cost_period" : {
+      "properties" : {
+        "start" : {
+          "type" : "string",
+          "format" : "datetime"
+        },
+        "end" : {
+          "type" : "string",
+          "format" : "datetime"
+        }
+      },
+      "description" : "Time period when cost was/is in use. Allows cost to be placed in historical context.",
+      "example" : {
+        "start" : "start",
+        "end" : "end"
+      }
+    },
+    "Address_period" : {
+      "properties" : {
+        "start" : {
+          "type" : "string",
+          "format" : "datetime"
+        },
+        "end" : {
+          "type" : "string",
+          "format" : "datetime"
+        }
+      },
+      "description" : "Time period when address was/is in use. Allows addresses to be placed in historical context.",
+      "example" : {
+        "start" : "start",
+        "end" : "end"
+      }
+    },
+    "Qualification_period" : {
+      "properties" : {
+        "start" : {
+          "type" : "string"
+        },
+        "end" : {
+          "type" : "string"
+        }
+      }
+    }
+  },
+  "parameters" : {
+    "practitionerUuid" : {
+      "name" : "practitionerUuid",
+      "in" : "path",
+      "description" : "Unique identifier representing a specific practitioner that needs to be fetched",
+      "required" : true,
+      "type" : "string",
+      "format" : "uuid"
+    }
+  }
+}

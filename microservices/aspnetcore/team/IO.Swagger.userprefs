@@ -1,13 +1,9 @@
 ﻿<Properties StartupConfiguration="{E2A750EA-770C-4415-B102-E98AA713EDD0}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="src/IO.Swagger/Elastic/ESConnection.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="src/IO.Swagger/Program.cs">
     <Files>
-      <File FileName="src/IO.Swagger/Models/Location.cs" Line="54" Column="41" />
-      <File FileName="src/IO.Swagger/Models/Team.cs" Line="64" Column="39" />
-      <File FileName="src/IO.Swagger/Models/Member.cs" Line="80" Column="27" />
       <File FileName="src/IO.Swagger/Controllers/TeamQueryApi.cs" Line="122" Column="44" />
-      <File FileName="src/IO.Swagger/Attributes/ValidateModelStateAttribute.cs" Line="20" Column="1" />
       <File FileName="src/IO.Swagger/Controllers/TeamCommandApi.cs" Line="108" Column="42" />
-      <File FileName="src/IO.Swagger/Elastic/ESConnection.cs" Line="5" Column="46" />
+      <File FileName="src/IO.Swagger/Program.cs" Line="44" Column="50" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.IO.Swagger PreferredExecutionTarget="MonoDevelop.Default" />

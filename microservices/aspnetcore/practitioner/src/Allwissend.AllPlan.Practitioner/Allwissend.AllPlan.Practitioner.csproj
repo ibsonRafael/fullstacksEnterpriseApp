@@ -1,16 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <Description>IO.Swagger</Description>
-    <Copyright>IO.Swagger</Copyright>
+    <Description>Allwissend.AllPlan.Practitioner</Description>
+    <Copyright>Allwissend.AllPlan.Practitioner</Copyright>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PreserveCompilationContext>true</PreserveCompilationContext>
-    <AssemblyName>IO.Swagger</AssemblyName>
-    <PackageId>IO.Swagger</PackageId>
+    <AssemblyName>Allwissend.AllPlan.Practitioner</AssemblyName>
+    <PackageId>Allwissend.AllPlan.Practitioner</PackageId>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />
-    <Folder Include="Elastic\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />

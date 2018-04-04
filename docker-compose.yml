@@ -47,35 +47,59 @@ services:
 
 
   # The Application
-  php_backend:
-    container_name: backend.application.dev
+  # php_backend:
+  #   container_name: backend.application.dev
+  #   build:
+  #     context: ./dockerfiles/php7
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "9090:80"
+  #   volumes:
+  #     - ./backend:/var/www/html
+  #     - ./containers/logs/backend:/var/log/apache2
+  #   networks:
+  #     - frontend
+  #     - backend
+
+  # The Application
+  # dotnet_backend:
+  #   container_name: dotnet.application.dev
+  #   image: microsoft/dotnet:2.1-sdk
+  #   # build:
+  #   #   context: ./dockerfiles/php7
+  #   #   dockerfile: Dockerfile
+  #   ports:
+  #     - "9091:80"
+  #   # volumes:
+  #   #   - ./backend:/var/www/html
+  #   #   - ./containers/logs/backend:/var/log/apache2
+  #   networks:
+  #     - frontend
+  #     - backend
+
+  aspnetcore_team:
+    container_name: ms.team.dev
     build:
-      context: ./dockerfiles/php7
+      context: ./microservices/aspnetcore/team/src/IO.Swagger/
       dockerfile: Dockerfile
     ports:
-      - "9090:80"
-    volumes:
-      - ./backend:/var/www/html
-      - ./containers/logs/backend:/var/log/apache2
+      - "5001:5000"
     networks:
       - frontend
       - backend
 
-  # The Application
-  dotnet_backend:
-    container_name: dotnet.application.dev
-    image: microsoft/dotnet:2.1-sdk
-    # build:
-    #   context: ./dockerfiles/php7
-    #   dockerfile: Dockerfile
+
+  aspnetcore_practitioner:
+    container_name: ms.practitioner.dev
+    build:
+      context: ./microservices/aspnetcore/practitioner/src/Allwissend.AllPlan.Practitioner/
+      dockerfile: Dockerfile
     ports:
-      - "9091:80"
-    # volumes:
-    #   - ./backend:/var/www/html
-    #   - ./containers/logs/backend:/var/log/apache2
+      - "5002:5000"
     networks:
       - frontend
       - backend
+
 
   # # The Application
   # php_command:
@@ -193,7 +217,7 @@ services:
   # https://www.rabbitmq.com/tutorials/tutorial-two-dotnet.html
   # https://www.rabbitmq.com/tutorials/tutorial-five-php.html
   # https://www.rabbitmq.com/tutorials/tutorial-one-javascript.html
-  # 
+  #
   rabbitmq:
     container_name: rabbitmq.application.dev
     image: rabbitmq:latest

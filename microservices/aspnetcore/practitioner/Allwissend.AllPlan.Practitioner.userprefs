@@ -1,0 +1,26 @@
+﻿<Properties StartupConfiguration="{19012ED0-B088-4078-999F-18E390868EC3}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="src/Allwissend.AllPlan.Practitioner/Controllers/PractitionersApi.cs">
+    <Files>
+      <File FileName="src/Allwissend.AllPlan.Practitioner/Models/Address.cs" Line="115" Column="23" />
+      <File FileName="src/Allwissend.AllPlan.Practitioner/Models/AddressPeriod.cs" Line="1" Column="1" />
+      <File FileName="src/Allwissend.AllPlan.Practitioner/Models/Attachment.cs" Line="1" Column="1" />
+      <File FileName="src/Allwissend.AllPlan.Practitioner/Models/ContactPoint.cs" Line="81" Column="40" />
+      <File FileName="src/Allwissend.AllPlan.Practitioner/Models/ContactPointPeriod.cs" Line="1" Column="1" />
+      <File FileName="src/Allwissend.AllPlan.Practitioner/Models/Cost.cs" Line="57" Column="43" />
+      <File FileName="src/Allwissend.AllPlan.Practitioner/Models/CostPeriod.cs" Line="1" Column="1" />
+      <File FileName="src/Allwissend.AllPlan.Practitioner/Models/Error.cs" Line="1" Column="1" />
+      <File FileName="src/Allwissend.AllPlan.Practitioner/Models/Name.cs" Line="1" Column="1" />
+      <File FileName="src/Allwissend.AllPlan.Practitioner/Models/Practitioner.cs" Line="22" Column="49" />
+      <File FileName="src/Allwissend.AllPlan.Practitioner/Models/Qualification.cs" Line="1" Column="1" />
+      <File FileName="src/Allwissend.AllPlan.Practitioner/Models/QualificationPeriod.cs" Line="1" Column="1" />
+      <File FileName="src/Allwissend.AllPlan.Practitioner/Controllers/PractitionersApi.cs" Line="136" Column="18" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.Allwissend.AllPlan.Practitioner PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
+</Properties>

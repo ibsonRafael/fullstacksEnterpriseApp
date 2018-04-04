@@ -1,5 +1,13 @@
 # this is an example of the Uber API
 # as a demonstration of an API spec in YAML
+
+#java -jar modules/swagger-codegen-cli/target/swagger-codegen-cli.jar
+# generate
+# -i /Users/ibsonrgmachado/Projects/Allwissend/documentation/swaggers/Practitioner.yaml
+# -l aspnetcore
+# -o /Users/ibsonrgmachado/Projects/Allwissend/microservices/aspnetcore/practitioner
+# -c /Users/ibsonrgmachado/Projects/Allwissend/documentation/swaggers/Practioner.config.json
+
 swagger: '2.0'
 info:
   title: Allwissend Microservices API
