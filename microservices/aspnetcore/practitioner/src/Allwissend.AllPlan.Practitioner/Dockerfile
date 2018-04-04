@@ -11,6 +11,8 @@ RUN ["dotnet", "restore"]
 ENTRYPOINT ["dotnet", "run", "-p", "project.json", "web"]
 
 ################################################################################
+# https://github.com/dotnet/dotnet-docker/blob/master/samples/dotnetapp/Dockerfile
+# https://github.com/dotnet/dotnet-docker/blob/master/samples/aspnetapp/Dockerfile
 
 FROM microsoft/dotnet:2.0-sdk AS build
 WORKDIR /app
