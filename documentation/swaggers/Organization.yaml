@@ -48,7 +48,7 @@ paths:
       description: |
         The endpoint returns a list of *Organization*.
       tags:
-        - Organization
+        - OrganizationQuery
       operationId: listOrganization
       produces:
         - application/json
@@ -82,7 +82,7 @@ paths:
       description: |
         The endpoint save a new *Organization*.
       tags:
-        - Organization
+        - OrganizationCommand
       operationId: saveOrganization
       produces:
         - application/json
@@ -116,7 +116,7 @@ paths:
       description: |
         The endpoint returns a list of *Organization* by its current *Status*.
       tags:
-        - Organization
+        - OrganizationQuery
       operationId: listOrganizationByStatus
       produces:
         - application/json
@@ -161,7 +161,7 @@ paths:
       description: |
         The endpoint returns a list of *Organization*.
       tags:
-        - Organization
+        - OrganizationQuery
       operationId: listOrganizationByTags
       produces:
         - application/json
@@ -206,7 +206,7 @@ paths:
       description: |
         The endpoint returns one *Organization* by your uuid.
       tags:
-        - Organization
+        - OrganizationQuery
       operationId: getOrganizationByUuid
       produces:
         - application/json
@@ -239,7 +239,7 @@ paths:
       description: |
         The endpoint returns one *Organization* by your uuid.
       tags:
-        - Organization
+        - OrganizationCommand
       operationId: deleteOrganizationByUuid
       produces:
         - application/json
@@ -273,7 +273,7 @@ paths:
       description: |
         The endpoint returns a list of *Organization*.
       tags:
-        - Organization
+        - OrganizationCommand
       operationId: updateOrganization
       produces:
         - application/json
@@ -316,7 +316,7 @@ paths:
       description: |
         The endpoint returns a list of *Location*.
       tags:
-        - Location
+        - LocationQuery
       operationId: listLocation
       produces:
         - application/json
@@ -350,7 +350,7 @@ paths:
       description: |
         The endpoint save a new *Location*.
       tags:
-        - Location
+        - LocationCommand
       operationId: saveLocation
       produces:
         - application/json
@@ -384,7 +384,7 @@ paths:
       description: |
         The endpoint returns a list of *Location* by its current *Status*.
       tags:
-        - Location
+        - LocationQuery
       operationId: listLocationByStatus
       produces:
         - application/json
@@ -429,7 +429,7 @@ paths:
       description: |
         The endpoint returns a list of *Location*.
       tags:
-        - Location
+        - LocationQuery
       operationId: listLocationByTags
       produces:
         - application/json
@@ -470,11 +470,11 @@ paths:
 
   /location/{locationUuid}:
     get:
-      summary: Location
+      summary: LocationQuery
       description: |
         The endpoint returns one *Location* by your uuid.
       tags:
-        - Location
+        - LocationQuery
       operationId: getLocationByUuid
       produces:
         - application/json
@@ -507,7 +507,7 @@ paths:
       description: |
         The endpoint returns one *Location* by your uuid.
       tags:
-        - Location
+        - LocationCommand
       operationId: deleteLocationByUuid
       produces:
         - application/json
@@ -541,7 +541,7 @@ paths:
       description: |
         The endpoint returns a list of *Location*.
       tags:
-        - Location
+        - LocationCommand
       operationId: updateLocation
       produces:
         - application/json
@@ -579,10 +579,20 @@ paths:
 
 
 definitions:
+  Period:
+    type: object
+    description: Time period when contact was/is in use. Allows contact to be placed in historical context.
+    properties:
+      start:
+        type: string
+        format: date-time
+      end:
+        type: string
+        format: date-time
+
   CodeableConcept:
     type: object
     required:
-      - uuid
       - code
       - name
     properties:
@@ -600,7 +610,6 @@ definitions:
   Organization:
     type: object
     required:
-      - uuid
       - active
       - type
       - name
@@ -648,7 +657,6 @@ definitions:
   Position:
     type: object
     required:
-      - uuid
       - longitude
       - latitude
     properties:
@@ -669,10 +677,26 @@ definitions:
         format: double
         description: Altitude with WGS84 datum. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes below).
 
+  LocationStatus:
+    type: string
+    enum: &LocationStatus
+      - "active"
+      - "suspended"
+      - "inactive"
+    description: >
+      Contact Point Types
+
+  LocationMode:
+    type: string
+    enum: &LocationMode
+      - "instance"
+      - "kind"
+    description: >
+      Contact Point Types
+
   Location:
     type: object
     required:
-      - uuid
       - status
       - name
       - identifier
@@ -689,7 +713,7 @@ definitions:
       status:
         type: string
         description: The status (active | suspended | inactive) property covers the general availability of the resource, not the current value which may be covered by the operationStatus, or by a schedule/slots if they are configured for the location.
-        enum: [active, suspended, inactive]
+        enum: *LocationStatus
       operationalStatus:
         type: string
         description: The Operational status of the location (typically only for a bed/room). The Operational status covers operation values most relevant to beds (but can also apply to rooms/units/chair/etc such as an isolation unit/dialisys chair). This typically covers concepts such as contamination, housekeeping and other activities like maintenance.
@@ -707,7 +731,7 @@ definitions:
       mode:
         type: string
         description: Indicates whether (instance | kind) a resource instance represents a specific location or a class of locations.
-        enum: [instance, kind]
+        enum: *LocationMode
       type:
         $ref: '#/definitions/CodeableConcept'
         # description: Indicates the type of function performed at the location.
@@ -741,6 +765,29 @@ definitions:
         type: string
         description: Technical endpoints providing access to services operated for the location. Organizations may have different systems at different locations that provide various services and need to be able to define the technical connection details for how to connect to them, and for what purpose.
 
+  ContactPointUse:
+    type: string
+    enum: &ContactPointUse
+      - "home"
+      - "work"
+      - "temp"
+      - "old"
+      - "mobile"
+    description: >
+      Contact Point Types
+
+  ContactPointSystem:
+    type: string
+    enum: &ContactPointSystem
+      - "phone"
+      - "fax"
+      - "email"
+      - "pager"
+      - "url"
+      - "sms"
+      - "other"
+    description: >
+      Contact Point Types
 
   ContactPoint:
     type: object
@@ -752,14 +799,14 @@ definitions:
       system:
         type: string
         description: Telecommunications form for contact point - what communications system is required to make use of the contact.
-        enum: [phone, fax, email, pager, url, sms, other]
+        enum: *ContactPointSystem
       value:
         type: string
         description: The actual contact point details, in a form that is meaningful to the designated communication system (i.e. phone number or email address).
       use:
         type: string
         description: Identifies the purpose for the contact point. This is labeled as *Is Modifier* because applications should not mistake a temporary or old contact etc. for a current/permanent one. Applications can assume that a contact is current unless it explicitly says that it is temporary or old.
-        enum: [home, work, temp, old, mobile]
+        enum: *ContactPointUse
       rank:
         type: integer
         format: int32
@@ -768,24 +815,34 @@ definitions:
       period:
         type: object
         description: Time period when contact was/is in use. Allows contact to be placed in historical context.
-        properties:
-          start:
-            type: string
-            format: datetime
-          end:
-            type: string
-            format: datetime
+        $ref: '#/definitions/Period'
       creation:
         type: string
-        format: datetime
+        format: date-time
         description: Date telecom was first created
       lastUpdated:
         type: string
-        format: datetime
+        format: date-time
         description: Date telecom was last updated
 
+  AddressUse:
+    type: string
+    enum: &AddressUse
+      - "home"
+      - "work"
+      - "temp"
+      - "old"
+    description: >
+      Contact Point Types
 
-
+  AddressType:
+    type: string
+    enum: &AddressType
+      - "postal"
+      - "physical"
+      - "both"
+    description: >
+      Contact Point Types
 
   Address:
     type: object
@@ -798,11 +855,11 @@ definitions:
       use:
         type: string
         description: The purpose (home | work | temp | old) of this address. This is labeled as *Is Modifier* because applications should not mistake a temporary or old address etc.for a current/permanent one. Applications can assume that an address is current unless it explicitly says that it is temporary or old.
-        enum: [home, work, temp, old]
+        enum: *AddressUse
       type:
         type: string
         description: Distinguishes between physical addresses (those you can visit) and mailing addresses (e.g. PO Boxes and care-of addresses). Most addresses are both.
-        enum: [postal, physical, both]
+        enum: *AddressType
       line:
         type: array
         description: This component contains the house number, apartment number, street name, street direction,  P.O. Box number, delivery hints, and similar address information.
@@ -826,23 +883,15 @@ definitions:
       period:
         type: object
         description: Time period when address was/is in use. Allows addresses to be placed in historical context.
-        properties:
-          start:
-            type: string
-            format: datetime
-          end:
-            type: string
-            format: datetime
+        $ref: '#/definitions/Period'
       creation:
         type: string
-        format: datetime
+        format: date-time
         description: Date address was first created
       lastUpdated:
         type: string
-        format: datetime
+        format: date-time
         description: Date address was last updated
-
-
 
   Error:
     type: object
@@ -854,6 +903,7 @@ definitions:
         type: string
       fields:
         type: string
+
 
 securityDefinitions:
   internalApiKey:

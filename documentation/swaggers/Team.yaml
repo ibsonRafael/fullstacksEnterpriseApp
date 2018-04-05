@@ -487,11 +487,11 @@ definitions:
         description: Label to display in place of the data
       creation:
         type: string
-        format: datetime
+        format: date-time
         description: Date attachment was first created
       lastUpdated:
         type: string
-        format: datetime
+        format: date-time
         description: Date attachment was last updated
 
   Name:
@@ -521,17 +521,16 @@ definitions:
           type: string
       creation:
         type: string
-        format: datetime
+        format: date-time
         description: Date name was first created
       lastUpdated:
         type: string
-        format: datetime
+        format: date-time
         description: Date name was last updated
 
   CodeableConcept:
     type: object
     required:
-      - uuid
       - code
       - name
     properties:
@@ -552,15 +551,14 @@ definitions:
     properties:
       start:
         type: string
-        format: datetime
+        format: date-time
       end:
         type: string
-        format: datetime
+        format: date-time
 
   Location:
     type: object
     required:
-      - uuid
       - status
       - name
       - identifier
