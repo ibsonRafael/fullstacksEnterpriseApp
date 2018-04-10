@@ -14,13 +14,13 @@ services:
   #     - backend
 
   ### Redis Container #########################################
-  # redis:
-  #   image: redis:alpine
-  #   container_name: redis.application.dev
-  #   volumes:
-  #     - ./containers/redis-data:/data
-  #   networks:
-  #     - backend
+  redis:
+    image: redis:alpine
+    container_name: redis.application.dev
+    volumes:
+      - ./containers/redis-data:/data
+    networks:
+      - backend
 
 
   ### MySQL Container #########################################
