@@ -25,7 +25,7 @@ namespace IO.Swagger
         public static void Main(string[] args)
         {
             Console.WriteLine(" [!] Preparing the Rabbit...");
-            var factory = new ConnectionFactory() { HostName = "localhost", UserName = "pernalonga", Password = "eAiVelhinho"};
+            var factory = new ConnectionFactory() { HostName = "rabbitmq.application.dev", UserName = "pernalonga", Password = "eAiVelhinho"};
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
