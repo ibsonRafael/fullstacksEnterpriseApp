@@ -93,7 +93,6 @@ services:
     depends_on:
       - 'rabbitmq'
 
-
   aspnetcore_practitioner:
     container_name: ms.practitioner.dev
     build:
