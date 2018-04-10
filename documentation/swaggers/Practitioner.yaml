@@ -421,6 +421,76 @@ definitions:
         format: date-time
         description: Date practitioner was last updated
 
+
+  # DEFINIR MELHOR PARA ABRIR O MODULE DE CONTRATOS
+  PractitionerRole:
+    type: object
+    properties:
+      uuid:
+        type: string
+        format: uuid
+        description: Unique identifier
+
+  # DEFINIR MELHOR PARA ABRIR O MODULE DE CONTRATOS
+  Position:
+    type: object
+    properties:
+      uuid:
+        type: string
+        format: uuid
+        description: Unique identifier
+
+  # DEFINIR MELHOR PARA ABRIR O MODULE DE CONTRATOS
+  Specialty:
+    type: object
+    properties:
+      uuid:
+        type: string
+        format: uuid
+        description: Unique identifier
+
+  # DEFINIR MELHOR PARA ABRIR O MODULE DE CONTRATOS
+  ReferenceType:
+    type: string
+    enum: &ReferenceType
+      - "home"
+      - "work"
+    description: >
+      Contact Point Types
+
+  ReferenceRelationship:
+    type: string
+    enum: &ReferenceRelationship
+      - "home"
+      - "work"
+    description: >
+      Contact Point Types
+
+  # DEFINIR MELHOR PARA ABRIR O MODULE DE CONTRATOS
+  Reference:
+    type: object
+    properties:
+      uuid:
+        type: string
+        format: uuid
+        description: Unique identifier
+      parent:
+        type: string
+        format: uuid
+        description: Unique identifier
+      child:
+        type: string
+        format: uuid
+        description: Unique identifier
+      type:
+        type: string
+      relationship:
+        type: string
+      period:
+        type: object
+        description: Time period when cost was/is in use. Allows cost to be placed in historical context.
+        $ref: '#/definitions/Period'
+
   Attachment:
     type: object
     properties:

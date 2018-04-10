@@ -1,6 +1,9 @@
 version: '2'
 
 services:
+  ### Python server ###########################################
+  # pyhonml:
+
   ### Beanstalkd Container ####################################
   # beanstalkd:
   #   image: jonbaldie/beanstalkd
@@ -21,18 +24,18 @@ services:
 
 
   ### MySQL Container #########################################
-  mysql:
-    image: mysql:latest
-    container_name: mysql.application.dev
-    volumes:
-      - ./containers/mysql-data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_USER: root
-      MYSQL_DATABASE: appdb
-    networks:
-      - frontend
-      - backend
+  # mysql:
+  #   image: mysql:latest
+  #   container_name: mysql.application.dev
+  #   volumes:
+  #     - ./containers/mysql-data:/var/lib/mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: secret
+  #     MYSQL_USER: root
+  #     MYSQL_DATABASE: appdb
+  #   networks:
+  #     - frontend
+  #     - backend
 
   ### MongoDB Container #######################################
   # mongo:
@@ -80,10 +83,10 @@ services:
   aspnetcore_team:
     container_name: ms.team.dev
     build:
-      context: ./microservices/aspnetcore/team/src/IO.Swagger/
+      context: ./microservices/aspnetcore/team/
       dockerfile: Dockerfile
     ports:
-      - "5001:5000"
+      - "5001:5001"
     networks:
       - frontend
       - backend
@@ -92,10 +95,10 @@ services:
   aspnetcore_practitioner:
     container_name: ms.practitioner.dev
     build:
-      context: ./microservices/aspnetcore/practitioner/src/Allwissend.AllPlan.Practitioner/
+      context: ./microservices/aspnetcore/practitioner/
       dockerfile: Dockerfile
     ports:
-      - "5002:5000"
+      - "5002:5002"
     networks:
       - frontend
       - backend
@@ -144,38 +147,38 @@ services:
   #     - frontend
   #     - backend
 
-  ngnix_frontend:
-    container_name: ngnix.application.dev
-    image: nginx:latest
-    volumes:
-      #- ./nginx.template:/etc/nginx/conf.d/nginx.template
-      - ./frontend/web/:/html/
-    ports:
-       - "8080:80"
-       - "8443:443"
-    environment:
-       - NGINX_HOST=foobar.com
-       - NGINX_PORT=80
-    # command: /bin/sh -c "envsubst < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
-    # command: sh -c "envsubst \"`env | awk -F = '{printf \" $$%s\", $$1}'`\" < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
-    # command: /bin/sh -c "envsubst '\$VAR1 \$VAR2' < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
-    networks:
-      - frontend
-      - backend
+  # ngnix_frontend:
+  #   container_name: ngnix.application.dev
+  #   image: nginx:latest
+  #   volumes:
+  #     #- ./nginx.template:/etc/nginx/conf.d/nginx.template
+  #     - ./frontend/web/:/html/
+  #   ports:
+  #      - "8080:80"
+  #      - "8443:443"
+  #   environment:
+  #      - NGINX_HOST=foobar.com
+  #      - NGINX_PORT=80
+  #   # command: /bin/sh -c "envsubst < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+  #   # command: sh -c "envsubst \"`env | awk -F = '{printf \" $$%s\", $$1}'`\" < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+  #   # command: /bin/sh -c "envsubst '\$VAR1 \$VAR2' < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+  #   networks:
+  #     - frontend
+  #     - backend
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG}
-    container_name: es1.application.dev
-    environment:
-      - cluster.name=application-cluster
-      # - 'http.host=0.0.0.0'
-      # - 'transport.host=127.0.0.1'
-      # - 'ELASTIC_PASSWORD=${ELASTIC_PASSWORD}'
-    ports:
-      - "9200:9200"
-    networks:
-      - frontend
-      - backend
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:${TAG}
+  #   container_name: es1.application.dev
+  #   environment:
+  #     - cluster.name=application-cluster
+  #     # - 'http.host=0.0.0.0'
+  #     # - 'transport.host=127.0.0.1'
+  #     # - 'ELASTIC_PASSWORD=${ELASTIC_PASSWORD}'
+  #   ports:
+  #     - "9200:9200"
+  #   networks:
+  #     - frontend
+  #     - backend
 
   # elasticsearch2:
   #   image: docker.elastic.co/elasticsearch/elasticsearch:${TAG}
@@ -194,47 +197,47 @@ services:
   #   depends_on:
   #     - 'elasticsearch'
 
-  kibana:
-    image: docker.elastic.co/kibana/kibana:${TAG}
-    container_name: kibana.application.dev
-    # volumes:
-    #    - ./kibana.yml:/usr/share/kibana/config/kibana.yml
-    environment:
-      SERVER_NAME: kibana.application.dev
-      ELASTICSEARCH_URL: http://es1.application.dev:9200
-      # - ELASTICSEARCH_USERNAME=kibana
-      # - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
-
-    ports:
-      - "5601:5601"
-    networks:
-      - frontend
-      - backend
-    depends_on:
-      - 'elasticsearch'
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:${TAG}
+  #   container_name: kibana.application.dev
+  #   # volumes:
+  #   #    - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+  #   environment:
+  #     SERVER_NAME: kibana.application.dev
+  #     ELASTICSEARCH_URL: http://es1.application.dev:9200
+  #     # - ELASTICSEARCH_USERNAME=kibana
+  #     # - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+  #
+  #   ports:
+  #     - "5601:5601"
+  #   networks:
+  #     - frontend
+  #     - backend
+  #   depends_on:
+  #     - 'elasticsearch'
 
   ### RabbitMQ ##################################################
   # https://www.rabbitmq.com/tutorials/tutorial-two-dotnet.html
   # https://www.rabbitmq.com/tutorials/tutorial-five-php.html
   # https://www.rabbitmq.com/tutorials/tutorial-one-javascript.html
   #
-  rabbitmq:
-    container_name: rabbitmq.application.dev
-    image: rabbitmq:latest
-    volumes:
-      - ./containers/rabbitmq-data:/var/lib/rabbitmq
-    ports:
-      - "4369:4369"
-      - "5671:5671"
-      - "5672:5672"
-      - "5673:5673"
-      - "25672:25672"
-    environment:
-      - RABBITMQ_DEFAULT_USER=pernalonga
-      - RABBITMQ_DEFAULT_PASS=eAiVelhinho
-    networks:
-      - frontend
-      - backend
+  # rabbitmq:
+  #   container_name: rabbitmq.application.dev
+  #   image: rabbitmq:latest
+  #   volumes:
+  #     - ./containers/rabbitmq-data:/var/lib/rabbitmq
+  #   ports:
+  #     - "4369:4369"
+  #     - "5671:5671"
+  #     - "5672:5672"
+  #     - "5673:5673"
+  #     - "25672:25672"
+  #   environment:
+  #     - RABBITMQ_DEFAULT_USER=pernalonga
+  #     - RABBITMQ_DEFAULT_PASS=eAiVelhinho
+  #   networks:
+  #     - frontend
+  #     - backend
 
   ### Jenkins ###################################################
   # jenkins:
