@@ -1,0 +1,543 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Allwissend Auth API",
+    "version" : "1.0.0",
+    "title" : "Allwissend Microservices API"
+  },
+  "host" : "auth.application.dev",
+  "basePath" : "/v1",
+  "schemes" : [ "http", "https" ],
+  "produces" : [ "application/json", "application/jwt" ],
+  "security" : [ {
+    "internalApiKey" : [ ]
+  } ],
+  "paths" : {
+    "/auth/login" : {
+      "post" : {
+        "tags" : [ "LoginCommand" ],
+        "summary" : "Authenticate a user against the server/database",
+        "description" : "The endpoint save a new *Organization*.\n",
+        "operationId" : "doLogin",
+        "produces" : [ "application/jwt", "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "User to be authenticate",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/User"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/JWTokenEncoded"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "402" : {
+            "description" : "Payment Required",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "403" : {
+            "description" : "Forbiden",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "504" : {
+            "description" : "Gateway Timeout",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/auth/reset" : {
+      "post" : {
+        "tags" : [ "LoginCommand" ],
+        "summary" : "Authenticate a user against the server/database",
+        "description" : "The endpoint save a new *Organization*.\n",
+        "operationId" : "resetPassword",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "User to be authenticate",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/User"
+          }
+        } ],
+        "responses" : {
+          "202" : {
+            "description" : "Accepted"
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "402" : {
+            "description" : "Payment Required",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "403" : {
+            "description" : "Forbiden",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "504" : {
+            "description" : "Gateway Timeout",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/auth/user" : {
+      "get" : {
+        "tags" : [ "UserQuery" ],
+        "summary" : "Get a specific *User*",
+        "description" : "The endpoint to update a *User*.\n",
+        "operationId" : "listUser",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/User"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "402" : {
+            "description" : "Payment Required",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "403" : {
+            "description" : "Forbiden",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "User not found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "504" : {
+            "description" : "Gateway Timeout",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "internalApiKey" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "UserCommand" ],
+        "summary" : "Create a new user",
+        "description" : "The endpoint save a new *User*.\n",
+        "operationId" : "createUser",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "User to be created",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/User"
+          }
+        } ],
+        "responses" : {
+          "202" : {
+            "description" : "Accepted"
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "402" : {
+            "description" : "Payment Required",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "403" : {
+            "description" : "Forbiden",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "504" : {
+            "description" : "Gateway Timeout",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/auth/user/{userUuid}" : {
+      "get" : {
+        "tags" : [ "UserQuery" ],
+        "summary" : "Get a specific *User*",
+        "description" : "The endpoint to update a *User*.\n",
+        "operationId" : "getUser",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userUuid",
+          "in" : "path",
+          "description" : "Unique identifier representing a specific organization that needs to be fetched",
+          "required" : true,
+          "type" : "string",
+          "format" : "uuid"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "402" : {
+            "description" : "Payment Required",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "403" : {
+            "description" : "Forbiden",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "User not found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "504" : {
+            "description" : "Gateway Timeout",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "internalApiKey" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "UserCommand" ],
+        "summary" : "Authenticate a user against the server/database",
+        "description" : "The endpoint to update a *User*.\n",
+        "operationId" : "updateUser",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userUuid",
+          "in" : "path",
+          "description" : "Unique identifier representing a specific organization that needs to be fetched",
+          "required" : true,
+          "type" : "string",
+          "format" : "uuid"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "User to be updated",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/User"
+          }
+        } ],
+        "responses" : {
+          "202" : {
+            "description" : "Accepted"
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "402" : {
+            "description" : "Payment Required",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "403" : {
+            "description" : "Forbiden",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "504" : {
+            "description" : "Gateway Timeout",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "internalApiKey" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "UserCommand" ],
+        "summary" : "Delete a *User* by his uuid",
+        "description" : "The endpoint to update a *User*.\n",
+        "operationId" : "deleteUser",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userUuid",
+          "in" : "path",
+          "description" : "Unique identifier representing a specific organization that needs to be fetched",
+          "required" : true,
+          "type" : "string",
+          "format" : "uuid"
+        } ],
+        "responses" : {
+          "202" : {
+            "description" : "Accepted"
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "402" : {
+            "description" : "Payment Required",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "403" : {
+            "description" : "Forbiden",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "User not found",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "504" : {
+            "description" : "Gateway Timeout",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "internalApiKey" : [ ]
+        } ]
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "internalApiKey" : {
+      "type" : "apiKey",
+      "name" : "token",
+      "in" : "header"
+    }
+  },
+  "definitions" : {
+    "Period" : {
+      "type" : "object",
+      "properties" : {
+        "start" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "end" : {
+          "type" : "string",
+          "format" : "date-time"
+        }
+      },
+      "description" : "Time period when contact was/is in use. Allows contact to be placed in historical context."
+    },
+    "User" : {
+      "type" : "object",
+      "required" : [ "user" ],
+      "properties" : {
+        "uuid" : {
+          "type" : "string",
+          "format" : "uuid",
+          "description" : "Unique identifier representing a specific user."
+        },
+        "user" : {
+          "type" : "string",
+          "description" : "The user name to authenticate"
+        },
+        "password" : {
+          "type" : "string",
+          "description" : "Password of user"
+        },
+        "passwordConfirmation" : {
+          "type" : "string",
+          "description" : "Password of user"
+        }
+      },
+      "example" : {
+        "passwordConfirmation" : "passwordConfirmation",
+        "password" : "password",
+        "uuid" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+        "user" : "user"
+      }
+    },
+    "JWToken" : {
+      "type" : "object",
+      "properties" : {
+        "iss" : {
+          "type" : "string",
+          "description" : "Issuer"
+        },
+        "sub" : {
+          "type" : "string",
+          "description" : "Subject"
+        },
+        "aud" : {
+          "type" : "string",
+          "description" : "Audience"
+        },
+        "exp" : {
+          "type" : "string",
+          "description" : "Expiration Time"
+        },
+        "nbf" : {
+          "type" : "string",
+          "description" : "Not Before"
+        },
+        "iat" : {
+          "type" : "string",
+          "description" : "Issued At"
+        },
+        "jti" : {
+          "type" : "string",
+          "description" : "JWT ID"
+        },
+        "uuid" : {
+          "type" : "string",
+          "format" : "uuid",
+          "description" : "Unique identifier representing a specific user."
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Full name"
+        },
+        "given_name" : {
+          "type" : "string",
+          "description" : "Given name(s) or first name(s)"
+        },
+        "nickname" : {
+          "type" : "string",
+          "description" : "Casual name"
+        },
+        "email" : {
+          "type" : "string",
+          "description" : "Preferred e-mail address"
+        },
+        "email_verified" : {
+          "type" : "boolean",
+          "description" : "True if the e-mail address has been verified; otherwise false"
+        },
+        "zoneinfo" : {
+          "type" : "string",
+          "description" : "Time zone"
+        },
+        "locale" : {
+          "type" : "string",
+          "description" : "Locale"
+        },
+        "cnf" : {
+          "type" : "string",
+          "description" : "Confirmation"
+        },
+        "orig" : {
+          "type" : "string",
+          "description" : "Originating Identity String"
+        },
+        "dest" : {
+          "type" : "string",
+          "description" : "Destination Identity String"
+        },
+        "mky" : {
+          "type" : "string",
+          "description" : "Media Key Fingerprint String"
+        }
+      },
+      "description" : "Time period when contact was/is in use. Allows contact to be placed in historical context."
+    },
+    "JWTokenEncoded" : {
+      "type" : "string",
+      "description" : "Encoded JSON Web Token (JWT)"
+    },
+    "Error" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "message" : {
+          "type" : "string"
+        },
+        "fields" : {
+          "type" : "string"
+        }
+      }
+    }
+  },
+  "parameters" : {
+    "userUuid" : {
+      "name" : "userUuid",
+      "in" : "path",
+      "description" : "Unique identifier representing a specific organization that needs to be fetched",
+      "required" : true,
+      "type" : "string",
+      "format" : "uuid"
+    }
+  }
+}

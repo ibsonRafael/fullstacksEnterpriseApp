@@ -80,6 +80,20 @@ services:
   #     - frontend
   #     - backend
 
+  aspnetcore_auth:
+    container_name: ms.auth.dev
+    build:
+      context: ./microservices/aspnetcore/auth/
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - 'rabbitmq'
+
+
   aspnetcore_team:
     container_name: ms.team.dev
     build:
