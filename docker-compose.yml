@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 
 services:
   ### Python server ###########################################
@@ -21,6 +21,34 @@ services:
       - ./containers/redis-data:/data
     networks:
       - backend
+
+  ### RabbitMQ ##################################################
+  # https://www.rabbitmq.com/tutorials/tutorial-two-dotnet.html
+  # https://www.rabbitmq.com/tutorials/tutorial-five-php.html
+  # https://www.rabbitmq.com/tutorials/tutorial-one-javascript.html
+  rabbitmq:
+    container_name: rabbitmq.application.dev
+    image: rabbitmq:latest
+    volumes:
+      - ./containers/rabbitmq-data:/var/lib/rabbitmq
+    ports:
+      - "4369:4369"
+      - "5671:5671"
+      - "5672:5672"
+      - "5673:5673"
+      - "25672:25672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=pernalonga
+      - RABBITMQ_DEFAULT_PASS=eAiVelhinho
+    networks:
+      - frontend
+      - backend
+    healthcheck:
+      test: "exit 0"
+      # test: ["CMD", "curl", "-f", "http://localhost:15672"]
+      # interval: 30s
+      # timeout: 10s
+      # retries: 5
 
 
   ### MySQL Container #########################################
@@ -91,7 +119,10 @@ services:
       - frontend
       - backend
     depends_on:
-      - 'rabbitmq'
+      rabbitmq:
+        condition: service_healthy
+    links:
+      - rabbitmq
 
 
   aspnetcore_team:
@@ -105,7 +136,10 @@ services:
       - frontend
       - backend
     depends_on:
-      - 'rabbitmq'
+      rabbitmq:
+        condition: service_healthy
+    links:
+      - rabbitmq
 
   aspnetcore_practitioner:
     container_name: ms.practitioner.dev
@@ -118,8 +152,10 @@ services:
       - frontend
       - backend
     depends_on:
-      - 'rabbitmq'
-
+      rabbitmq:
+        condition: service_healthy
+    links:
+      - rabbitmq
 
   # # The Application
   # php_command:
@@ -232,28 +268,6 @@ services:
   #     - backend
   #   depends_on:
   #   - 'elasticsearch'
-
-  ### RabbitMQ ##################################################
-  # https://www.rabbitmq.com/tutorials/tutorial-two-dotnet.html
-  # https://www.rabbitmq.com/tutorials/tutorial-five-php.html
-  # https://www.rabbitmq.com/tutorials/tutorial-one-javascript.html
-  rabbitmq:
-    container_name: rabbitmq.application.dev
-    image: rabbitmq:latest
-    volumes:
-      - ./containers/rabbitmq-data:/var/lib/rabbitmq
-    ports:
-      - "4369:4369"
-      - "5671:5671"
-      - "5672:5672"
-      - "5673:5673"
-      - "25672:25672"
-    environment:
-      - RABBITMQ_DEFAULT_USER=pernalonga
-      - RABBITMQ_DEFAULT_PASS=eAiVelhinho
-    networks:
-      - frontend
-      - backend
 
   ### Jenkins ###################################################
   # jenkins:
