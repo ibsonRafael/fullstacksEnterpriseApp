@@ -24,6 +24,12 @@ using System.ComponentModel.DataAnnotations;
 using Allwissend.AllPlan.Auth.Attributes;
 using Allwissend.AllPlan.Auth.Models;
 
+using System.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+
 namespace Allwissend.AllPlan.Auth.Controllers
 { 
     /// <summary>
@@ -67,14 +73,48 @@ namespace Allwissend.AllPlan.Auth.Controllers
             //TODO: Uncomment the next line to return response 504 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(504, default(Error));
 
-            string exampleJson = null;
-            exampleJson = "{ }";
-            
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<JWTokenEncoded>(exampleJson)
-            : default(JWTokenEncoded);
+
+            // Define const Key this should be private secret key  stored in some safe place
+            string key = "401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1";
+
+            // Create Security key  using private key above:
+            // not that latest version of JWT using Microsoft namespace instead of System
+            var securityKey = new Microsoft
+                .IdentityModel.Tokens.SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+
+            // Also note that securityKey length should be >256b
+            // so you have to make sure that your private key has a proper length
+            //
+            var credentials = new Microsoft.IdentityModel.Tokens.SigningCredentials
+                              (securityKey, SecurityAlgorithms.HmacSha256Signature);
+
+
+
+            var claimsIdentity = new ClaimsIdentity(new List<Claim>()
+            {
+                new Claim(ClaimTypes.NameIdentifier, "myemail@myprovider.com"),
+                new Claim(ClaimTypes.Role, "Administrator"),
+            }, "Custom");
+
+            var securityTokenDescriptor = new SecurityTokenDescriptor()
+            {
+                Audience = "http://my.website.com",
+                Issuer = "http://my.tokenissuer.com",
+                Subject = claimsIdentity,
+                SigningCredentials = credentials,
+            };
+
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var plainToken = tokenHandler.CreateToken(securityTokenDescriptor);
+            var signedAndEncodedToken = tokenHandler.WriteToken(plainToken);
+
+
+            Console.WriteLine(plainToken.ToString());
+            Console.WriteLine(signedAndEncodedToken);
+
             //TODO: Change the data returned
-            return new ObjectResult(example);
+            return new ObjectResult(signedAndEncodedToken);
         }
 
         /// <summary>

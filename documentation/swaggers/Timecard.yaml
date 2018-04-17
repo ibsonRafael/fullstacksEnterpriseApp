@@ -1,14 +1,137 @@
-timecard
-a card used to record an employee's starting and quitting times, usually stamped by a time clock.
+# timecard
+# a card used to record an employee's starting and quitting times, usually stamped by a time clock.
+swagger: '2.0'
+info:
+  title: Allwissend Microservices API
+  description: Allwissend Auth API
+  version: "1.0.0"
 
+# the domain of the service
+
+host: auth.application.dev
+
+# array of all schemes that your API supports
+schemes:
+  - http
+  - https
+
+security:
+  - internalApiKey: []
+
+# will be prefixed to all paths
+basePath: /v1
+
+produces:
+  - application/json
+
+parameters:
+  shiftUuid:
+    in: path
+    name: shiftUuid
+    description: Unique identifier representing a specific **Shift** that needs to be fetched
+    required: true
+    type: string
+    format: uuid
+
+  practitionerUuid:
+    in: path
+    name: practitionerUuid
+    description: Unique identifier representing a specific practitioner that needs to be fetched
+    required: true
+    type: string
+    format: uuid
+
+paths:
+  timecard/shift:
+    get:
+      summary: List all **Shift** stored at database
+      tags:
+        TimecardQuery
+      operationId: listShiftByUuid
+      produces:
+        - application/json
+
+    post:
+      summary: Save a new **Shift**
+      tags:
+        TimecardCommand
+      operationId: createShift
+      x-operationEvent: NEW_SHIFT_CREATED
+      parameters:
+        - in: body
+          name: body
+          description: Shift to be created
+          required: true
+          schema:
+            $ref: "#/definitions/Shift"
+
+  timecard/shift/{shiftUuid}:
+    get:
+      summary: List only the specific **Shift** stored at database using their uuid
+      tags:
+        TimecardQuery
+      operationId: findShiftByUuid
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/shiftUuid'
+
+    put:
+      summary: Update a **Shift**
+      tags:
+        TimecardCommand
+      operationId: updateShiftByUuid
+      x-operationEvent: SHIFT_UPDATED
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/definitions/shiftUuid'
+        - in: body
+          name: body
+          description: Shift to be updated
+          required: true
+          schema:
+            $ref: "#/definitions/Shift"
+
+    delete:
+      summary: Dlete a **Shift** from database
+      tags:
+        TimecardCommand
+      operationId: deleteShiftByUuid
+      x-operationEvent: SHIFT_DELETED
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/shiftUuid'
+
+
+timecard/starting/{practitionerUuid}
+timecard/quitting/{practitionerUuid}
+timecard/times/{practitionerUuid}
+timecard/record/{practitionerUuid}
 timecard/
-timecard/starting
-timecard/quitting
-timecard/times
-timecard/record
 timecard/
 timecard/
-timecard/
+
+tasks/
+goals/
+activities/
+
+WorkBreakdownStructure
+  WorkItem [name, start, finish, actual_start, actual_finish, percent_completed]
+    Steps [name, status, weigth]
+    Resources [name, status]
+
+
+! appointment/task/{id}/
+? appointment/goal/{id}/
+! appointment/task/{id}/activities/
+
+ShiftWeekday s,t,q,q,s,s,d|*
+ShiftType (m|t|n) | (d|n) | d +  s/f
+Shift = ShiftWeekday + ShiftType
+ShiftCard
+Timecard
 
 
 7abe4d68-5a8d-4a47-bfa1-c39d3632955e

@@ -153,7 +153,6 @@ paths:
           description: Gateway Timeout
           schema:
             $ref: '#/definitions/Error'
-
     post:
       summary: Create a new user
       description: |
@@ -189,7 +188,6 @@ paths:
           description: Gateway Timeout
           schema:
             $ref: '#/definitions/Error'
-
   /auth/user/{userUuid}:
     get:
       summary: Get a specific *User*
@@ -229,7 +227,6 @@ paths:
           description: Gateway Timeout
           schema:
             $ref: '#/definitions/Error'
-
     put:
       summary: Authenticate a user against the server/database
       description: |
@@ -268,7 +265,6 @@ paths:
           description: Gateway Timeout
           schema:
             $ref: '#/definitions/Error'
-
     delete:
       summary: Delete a *User* by his uuid
       description: |
@@ -308,17 +304,6 @@ paths:
 
 
 definitions:
-  Period:
-    type: object
-    description: Time period when contact was/is in use. Allows contact to be placed in historical context.
-    properties:
-      start:
-        type: string
-        format: date-time
-      end:
-        type: string
-        format: date-time
-
   User:
     type: object
     required:
@@ -383,6 +368,10 @@ definitions:
       email_verified:
         type: boolean
         description: True if the e-mail address has been verified; otherwise false
+      last_login:
+        type: string
+        format: date-time
+        description: Determines the date and time of last login, its contains null if user never logged.
       zoneinfo:
         type: string
         description: Time zone
@@ -405,6 +394,20 @@ definitions:
   JWTokenEncoded:
     type: string
     description: Encoded JSON Web Token (JWT)
+
+  Response:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: Http status code.
+      message:
+        type: string
+        description: Contais any server/api message thas needs to be returned to front/client... If possible, use http messages equivalent to the http status code.
+      data:
+        type: object
+        description: A model or a array of models, or even a array of errors or a single error object.
 
   Error:
     type: object
