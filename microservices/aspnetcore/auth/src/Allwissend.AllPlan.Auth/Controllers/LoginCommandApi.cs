@@ -30,13 +30,31 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authorization;
+
 namespace Allwissend.AllPlan.Auth.Controllers
 { 
+
     /// <summary>
     /// 
     /// </summary>
     public class LoginCommandApiController : Controller
     { 
+        private IConfiguration Configuration { get; }
+
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="configuration"></param>
+        public LoginCommandApiController(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+
         /// <summary>
         /// Authenticate a user against the server/database
         /// </summary>
@@ -57,7 +75,7 @@ namespace Allwissend.AllPlan.Auth.Controllers
         [SwaggerResponse(statusCode: 403, type: typeof(Error), description: "Forbiden")]
         [SwaggerResponse(statusCode: 504, type: typeof(Error), description: "Gateway Timeout")]
         public virtual IActionResult DoLogin([FromBody]User body)
-        { 
+        {
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200, default(JWTokenEncoded));
 
@@ -75,7 +93,7 @@ namespace Allwissend.AllPlan.Auth.Controllers
 
 
             // Define const Key this should be private secret key  stored in some safe place
-            string key = "401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1";
+            string key = Configuration["JwtTokenConfigurations:Key"];
 
             // Create Security key  using private key above:
             // not that latest version of JWT using Microsoft namespace instead of System
@@ -98,8 +116,8 @@ namespace Allwissend.AllPlan.Auth.Controllers
 
             var securityTokenDescriptor = new SecurityTokenDescriptor()
             {
-                Audience = "http://my.website.com",
-                Issuer = "http://my.tokenissuer.com",
+                Audience = Configuration["JwtTokenConfigurations:Audience"],
+                Issuer = Configuration["JwtTokenConfigurations:Issuer"],
                 Subject = claimsIdentity,
                 SigningCredentials = credentials,
             };
@@ -127,7 +145,7 @@ namespace Allwissend.AllPlan.Auth.Controllers
         /// <response code="402">Payment Required</response>
         /// <response code="403">Forbiden</response>
         /// <response code="504">Gateway Timeout</response>
-        [HttpPost]
+        [HttpPost, Authorize]
         [Route("/v1/auth/reset")]
         [ValidateModelState]
         [SwaggerOperation("ResetPassword")]
