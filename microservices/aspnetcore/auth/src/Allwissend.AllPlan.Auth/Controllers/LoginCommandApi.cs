@@ -43,15 +43,17 @@ namespace Allwissend.AllPlan.Auth.Controllers
     public class LoginCommandApiController : Controller
     { 
         private IConfiguration Configuration { get; }
+        private UserContext Context { get; }
 
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="configuration"></param>
-        public LoginCommandApiController(IConfiguration configuration)
+        public LoginCommandApiController(IConfiguration configuration, UserContext context)
         {
             Configuration = configuration;
+            Context = context;
         }
 
 
@@ -91,6 +93,8 @@ namespace Allwissend.AllPlan.Auth.Controllers
             //TODO: Uncomment the next line to return response 504 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(504, default(Error));
 
+            User user = Context.Users.Where(u => u._User.Equals("usuario")).First();
+
 
             // Define const Key this should be private secret key  stored in some safe place
             string key = Configuration["JwtTokenConfigurations:Key"];
@@ -106,11 +110,9 @@ namespace Allwissend.AllPlan.Auth.Controllers
             var credentials = new Microsoft.IdentityModel.Tokens.SigningCredentials
                               (securityKey, SecurityAlgorithms.HmacSha256Signature);
 
-
-
             var claimsIdentity = new ClaimsIdentity(new List<Claim>()
             {
-                new Claim(ClaimTypes.NameIdentifier, "myemail@myprovider.com"),
+                new Claim(ClaimTypes.NameIdentifier, user._User + "@myprovider.com"),
                 new Claim(ClaimTypes.Role, "Administrator"),
             }, "Custom");
 
@@ -122,16 +124,13 @@ namespace Allwissend.AllPlan.Auth.Controllers
                 SigningCredentials = credentials,
             };
 
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var plainToken = tokenHandler.CreateToken(securityTokenDescriptor);
             var signedAndEncodedToken = tokenHandler.WriteToken(plainToken);
 
-
             Console.WriteLine(plainToken.ToString());
             Console.WriteLine(signedAndEncodedToken);
 
-            //TODO: Change the data returned
             return new ObjectResult(signedAndEncodedToken);
         }
 
@@ -153,8 +152,8 @@ namespace Allwissend.AllPlan.Auth.Controllers
         [SwaggerResponse(statusCode: 402, type: typeof(Error), description: "Payment Required")]
         [SwaggerResponse(statusCode: 403, type: typeof(Error), description: "Forbiden")]
         [SwaggerResponse(statusCode: 504, type: typeof(Error), description: "Gateway Timeout")]
-        public virtual IActionResult ResetPassword([FromBody]User body)
-        { 
+        public virtual IActionResult ResetPassword([FromBody]User body, [FromHeader]SecurityTokenDescriptor authentication)
+        {
             //TODO: Uncomment the next line to return response 202 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(202);
 
@@ -170,6 +169,7 @@ namespace Allwissend.AllPlan.Auth.Controllers
             //TODO: Uncomment the next line to return response 504 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(504, default(Error));
 
+            Console.WriteLine(authentication);
 
             throw new NotImplementedException();
         }

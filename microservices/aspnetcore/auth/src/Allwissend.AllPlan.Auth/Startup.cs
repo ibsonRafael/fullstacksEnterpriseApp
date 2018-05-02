@@ -23,6 +23,9 @@ using Allwissend.AllPlan.Auth.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Allwissend.AllPlan.Auth.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Allwissend.AllPlan.Auth
 {
@@ -66,7 +69,11 @@ namespace Allwissend.AllPlan.Auth
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtTokenConfigurations:Key"]))
                     };
                 });
-            
+
+
+            // Entity framework
+            services.AddDbContext<UserContext>(options => options.UseMySql("Server=localhost;User Id=root;Password=marcel0785;Database=auth"));
+
             // Add framework services.
             services
                 .AddMvc()

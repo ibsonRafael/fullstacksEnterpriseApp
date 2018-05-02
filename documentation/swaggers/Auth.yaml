@@ -35,6 +35,12 @@ parameters:
     required: true
     type: string
     format: uuid
+  authentication:
+    in: header
+    name: Authentication
+    description: JWTAuthenticationToken of logged user
+    required: true
+    type: string
 
 paths:
   /auth/login:
